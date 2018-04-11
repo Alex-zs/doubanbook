@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>豆瓣文章</title>
+	<link rel="shortcut icon" href="/static/images/bitbug_favicon.ico">
+	<link rel="stylesheet" href="/static/css/font_csh.css">
+	<link rel="stylesheet" href="/static/css/article_list.css">
+	<link rel="stylesheet" href="/static/css/footer.css">
+	<link rel="stylesheet" href="/static/css/header.css">
+	<!-- 插件部分 -->
+
+	
+</head>
+<body>
+	<div class="container">
+<!-- <div class="tipstutorials">建议图标尺寸：80×80px</div>  
+<em class="tipstutorials">建议图标尺寸：150×100px<br/>背景尺寸：640×200px</em>   -->
+		<div class="header">
+			<div class="logo_1"><a style="display: block;" href="/"><img src="/static/images/logo.png" alt=""></a></div>
+			<div class="nav_menu">
+				<a href="/articleList/1/1/"><img src="/static/images/book_list_logo.png" alt="shouye.html">
+				<span class="nav_menu_word">豆瓣文章</span>
+				<div style="clear: both;"></div>
+				</a>
+<!-- 				<ul class="nav_menu_ul">
+					<li class="nav_book">豆瓣读书</li>
+					<li class="nav_essey">豆瓣文章</li>
+				</ul> -->
+
+			</div>
+			<div class="search_box">
+				<input class="search_box_input" type="text" placeholder ="请输入关键词">
+				<button class="search_box_button"></button>
+			</div>
+			<div class="nav_log_reg">
+				{% if request.user.is_authenticated %}
+				<span class="personal_center"><a class="personal_center_a" href="/userArticleList/" >个人中心</a></span>
+				<span class="log_out" ><a class="log_out_a" href="/accounts/logout/">注销</a></span>
+				{% else %}
+				<span class="login"><a class="login_a" href="/accounts/login/">登录</a></span>
+				<span class="registration"><a class="registration_a" href="/accounts/register">注册</a></span>
+				{% endif %}
+			</div>
+		</div>
+		<div class="body">
+			<div class="article_save_tip" style="display: none;">您已成功添加到 个人中心-收藏</div>
+			<div class="body_top">
+				<div class="body_top_inner">
+
+					{% block ul %}
+					
+					{% endblock %}
+				</div>
+
+			</div>
+			
+			{% block content %}
+
+			{% endblock %}
+{% if message %}
+<script>
+	alert('{{message}}')
+</script>
+{% endif %}
+
+
+			<div class="footer">
+			<div class="footer_inner">
+				<div class="footer_nav">
+					<ul class="footer_nav_list">
+						<li class="footer_nav_content_1"><a class="footer_nav_content_a_1" href="">关于我们</a></li>
+						<li class="footer_nav_content_2"><a class="footer_nav_content_a_2"  href="">加入我们</a></li>
+						<li class="footer_nav_content_3"><a class="footer_nav_content_a_3"  href="">合作伙伴</a></li>
+						<li class="footer_nav_content_4"><a  class="footer_nav_content_a_4" href="">广告服务</a></li>
+						<li class="footer_nav_content_5"><a class="footer_nav_content_a_5"  href="">常见问题</a></li>
+					</ul>
+				</div>
+				<div class="footer_nav_middle">
+					<ul class="footer_nav_middle_list">
+						<li class="footer_nav_middle_xinlang"><a class="footer_nav_middle_a_xinlang" href=""><img src="/static/images/xinlang_lgo.png" alt=""></a></li>
+						<li class="footer_nav_middle_wechat"><a class="footer_nav_middle_a_wechat" href=""><img src="/static/images/weixin_logo.jpg" alt=""></a></li>
+						<li class="footer_nav_middle_chrome"><a class="footer_nav_middle_a_chrome" href=""><img src="/static/images/liulan——logo.png" alt=""></a></li>
+					</ul>
+					<div style="clear: both;"></div>
+				</div>
+				<div class="footer_bottom_address">© 2005－2018 douban.com, all rights reserved 北京豆网科技有限公司</div>
+			</div>
+
+		</div>
+		</div>
+	</div>
+</body>
+<script src="/static/js/jquery-3.2.1.min.js"></script>
+<script src="/static/js/article_list.js"></script>
+
+</html>

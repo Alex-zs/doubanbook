@@ -1,0 +1,92 @@
+*{
+	padding: 0px;
+	margin: 0px;
+	font-family: "微软雅黑";
+    list-style: none;
+}
+ a{
+    text-decoration: none;
+}
+li{
+	list-style-type: none;
+}
+.container{
+	width: 100%;
+	height: 1080px;
+	background-image: url(../images/error.png);
+	background-repeat: no-repeat;
+	background-size: cover;
+	border: 1px solid white;
+}
+.logo_look{
+	width: 244px;
+	/*height: 269px;*/
+	height: auto;
+	margin:0px auto;
+	margin-top: 90px;
+	margin-bottom: 66px;
+}
+h1{
+	/*width: 120px;
+	height: 53px;*/
+	
+	font-size: 72px;
+	letter-spacing: 2px;
+	color: #ffffff;
+	text-align: center;
+
+	/*margin-top: 66px;*/
+}
+.error_tip{
+
+	font-size: 30px;
+
+	line-height: 25px;
+	text-align: center;
+	margin-top: 98px;
+	/*display: block;*/
+	/*padding-top: 98px;*/
+	color: #ffffff;
+}
+.choose_list{
+	width: 650px;
+	margin: 0px auto;
+	margin-top: 133px;
+}
+.take_home a{
+	width: 300px;
+	height: 80px;
+	border-radius: 20px;
+	border: solid 4px #ffffff;
+	font-family: AdobeHeitiStd-Regular;
+	font-size: 30px;
+	line-height: 25px;
+	color: #ffffff;
+	float: left;
+	line-height: 80px;
+	text-align: center;
+}
+/*.take_home a{
+	line-height: 80px;
+	text-align: center;
+
+}*/
+.take_home,.refresh:hover{
+	cursor: pointer;
+}
+.refresh{
+	width: 300px;
+	height: 80px;
+	background-color: #ffffff;
+	border-radius: 20px;
+	border: solid 4px #00a896;
+	font-family: AdobeHeitiStd-Regular;
+	font-size: 30px;
+	line-height: 25px;
+	color: #00a896;
+	float: left;
+	line-height: 80px;
+	text-align: center;
+	margin-left: 30px;
+
+}

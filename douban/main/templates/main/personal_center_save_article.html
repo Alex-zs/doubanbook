@@ -1,0 +1,45 @@
+
+{% extends 'user_base.html' %}
+{% block link %}
+	<link rel="stylesheet" href="/static/css/font_csh.css">
+	<link rel="stylesheet" href="/static/css/personal_center_save_article.css">
+	<link rel="shortcut icon" href="/static/images/bitbug_favicon.ico">
+	<link rel="stylesheet" href="/static/css/footer.css">
+	{% endblock %}
+	{% block content %}
+
+				<div class="personal_body_save_article_content">
+					<!-- <div class="personal_body_save_article_inner"> -->
+						<ul>
+							{% for save in save_list %}
+							<li class="personal_body_save_article_1">
+								<div class="personal_body_save_article_pic_1"><a href="/detail/{{save.article.id}}/"><img src="/{{save.article.image}}/" alt=""></a></div>
+								<h5 class="personal_body_save_article_title_1"><a href="/detail/{{save.article.id}}/">{{save.article.title}}</a></h5>
+								<p class="personal_body_save_article_intro_1">{{save.article.abstract}}……
+								</p>
+								<a href="/delete/save/{{save.article.id}}/"><div class="personal_body_save_article_modify">删除</div></a>
+								 
+								 
+							</li>
+							{% endfor %}
+							
+						</ul>
+					<!-- 	<div class="personal_body_save_book_add"><a href="book_list.html">+</a> -->
+						</div>
+					<!-- </div> -->
+					
+					<!-- <div class="personal_body_write_title"><input class="personal_body_write_title_input" value="#请在此添加标题" type="text"></div>
+					<div class="personal_body_write_add_img">
+						<div class="personal_body_write_add_img_tip">#单击此添加图片</div>
+
+					</div>
+					<div class="personal_body_write_content"><textarea class="personal_body_write_content_text" value="#请在此添加正文" type="text"></textarea>
+					<div class="personal_body_write_content_tip" >#请在此添加正文</div>
+					</div> -->
+					
+			
+			{% endblock %}
+{% block script %}
+<script src="/static/js/jquery-3.2.1.min.js"></script>
+<script src="/static/js/personal_center_personal_article.js"></script>
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends 'user_base.html' %}
+
+  {% block link %}
+  <link rel="stylesheet" href="/static/css/font_csh.css">
+  <link rel="stylesheet" href="/static/css/personal_center_write_article.css">
+  <link rel="shortcut icon" href="/static/images/bitbug_favicon.ico">
+  <link rel="stylesheet" href="/static/css/footer.css">
+  <script type="text/javascript" src="/static/ueditor/ueditor.config.js"></script>
+  <script type="text/javascript" src="/static/ueditor/ueditor.all.min.js"></script>
+  {% endblock %}
+
+{% block content %}
+
+
+				<div class="personal_body_write_article">
+
+                    <form action="." enctype="multipart/form-data" method="post">
+                        {% csrf_token %}
+                       
+					<div class="personal_body_write_title"><input name="title" maxlength="256" required id="id_title"  class="personal_body_write_title_input" value="#请在此添加标题" type="text"></div>
+          <div class="personal_body_write_add_img">
+            <input type="file" name="image" required id="id_image" >
+
+          </div>
+
+									<div class="personal_body_write_content">
+
+                                         <script class="personal_body_write_content_text" id="id_content"   name="content"  style="display: inline-block;" type="text/plain">
+
+ </script>
+<script type="text/javascript">
+
+    var id_content = UE.getEditor('id_content',{'initialFrameWidth': 600, 'initialFrameHeight': 300, 'serverUrl': '/ueditor/controller/?imageMaxSize=1204000&imagePathFormat=static%2Fimg%2F&filePathFormat=main%2Fstatic%2Fimg%2F'});
+     id_content.ready(function(){
+
+     });
+</script></div>
+
+						<div class="article_type">
+						<select  name="article_cate" id="id_article_cate">
+  <option value="小说" selected>小说</option>
+
+  <option value="散文">散文</option>
+
+  <option value="感悟">感悟</option>
+
+  <option value="新闻">新闻</option>
+</select>
+</div>
+<br>
+<input class="personal_body_write_submit" type="submit" value="提交">
+
+
+</form>
+					</div> 	
+
+{% endblock %}
+
+{% block script %}
+
+<script src="/static/js/jquery-3.2.1.min.js"></script>
+<script src="/static/js/personal_center_write_article.js"></script>
+{% endblock %}
+
+
+				

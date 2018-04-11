@@ -1,0 +1,270 @@
+{% extends 'book_matherpage.html' %}
+{% load static %}
+{% load myfilter %}
+{% block head%}
+
+<head>
+	<meta charset="UTF-8">
+	<title>豆瓣读书</title>
+	<link rel="stylesheet" href="../css/font_csh.css">
+	<link rel="stylesheet" href="../css/book_contain.css">
+	<link rel="shortcut icon" href="../images/bitbug_favicon.ico">
+	<link rel="stylesheet" href="../css/footer.css">
+	<link rel="stylesheet" href="../css/header.css">
+
+</head>
+
+{% endblock %}
+{% block content%}
+    <div class="body">
+			<div class="body_top">
+				<div class="body_book_info">
+					<div class="body_book_pic"><img src="{{ book|key:"cover" }}" alt=""></div>
+					<div class="body_book_word">
+						<h5 class="body_book_title">{{ book|key:"bookname" }}</h5>
+						<div class="body_book_author">作者：<span>{{ book|key:"author" }}</span></div>
+						<div class="body_book_publish">出版社：<span>{{ book|key:"press" }}</span></div>
+						<div class="body_book_prename">
+						原作名: <span>{{ book|key:"originName" }}</span></div>
+						<div class="body_book_translator">译者: <span>{{ book|key:"translator" }}</span></div>
+						<div class="body_book_publishyear">出版年: <span>{{ book|key:"pressTime" }}</span></div>
+						<div class="body_book_pages">页数: <span>{{ book|key:"page" }}</span></div>
+						<div class="body_book_price">定价: <span>{{ book|key:"price" }}</span></div>
+
+					</div>
+					<div class="body_book_comment">我要写评论</div>
+				</div>
+
+
+				<div class="body_book_grade">
+					<h5 class="body_book_grade_title">豆瓣评分</h5>
+					<div class="body_book_grade_count">
+						<img src="../images/dafen.png" alt="">
+						<div class="body_book_grade_count_figure">{{ book|key:"score" }}</div>
+					</div>
+					<div class="body_book_grade_chart">
+						<ul>
+							<li class="body_book_grade_chart_li">
+								<span>5星</span>
+								<div class="body_book_grade_draw"></div>
+								<div class="body_book_grade_word" style="display: none;">{{ book|key:"star"|key:"5" }}</div>
+							</li>
+							<li class="body_book_grade_chart_li">
+								<span>4星</span>
+								<div class="body_book_grade_draw"></div>
+								<div class="body_book_grade_word" style="display: none;">{{ book|key:"star"|key:"4" }}</div>
+							</li>
+							<li class="body_book_grade_chart_li">
+								<span>3星</span>
+								<div class="body_book_grade_draw"></div>
+								<div class="body_book_grade_word" style="display: none;">{{ book|key:"star"|key:"3" }}</div>
+							</li>
+							<li class="body_book_grade_chart_li">
+								<span>2星</span>
+								<div class="body_book_grade_draw"></div>
+								<div class="body_book_grade_word" style="display: none;">{{ book|key:"star"|key:"2" }}</div>
+							</li>
+							<li class="body_book_grade_chart_li">
+								<span>1星</span>
+								<div class="body_book_grade_draw"></div>
+								<div class="body_book_grade_word" style="display: none;">{{ book|key:"star"|key:"1" }}</div>
+							</li>
+						</ul>
+						<div class="body_book_grade_other">
+							<div class="body_book_grade_love">
+                                {% if collected %}
+								    <img src="../images/grade_love.png" alt="">
+                                {% else %}
+								    <img src="../images/love.png" alt="">
+                                {% endif %}
+                                <input class="collect_sao_operation_collect" style="display: none" value="{% url 'book_collect' book|key:"id" %}">
+                                <input class="collect_sao_operation_uncollect" style="display: none" value="{% url 'book_uncollect' book|key:"id" %}">
+                                <img class="collect_sao_operation" src="" style="display: none">
+							</div>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+			<div class="body_book_intro">
+				<div class="body_book_intro_inner">
+					<span class="body_book_intro_dot_1"><img src="../images/many_dots_3.png" alt=""></span>
+					<span class="body_book_intro_word">内容简介</span>
+					<span class="body_book_intro_dot_2"><img src="../images/many_dots_3.png" alt=""></span>
+					<div class="body_book_intro_p"> {{ book|key:"introduction" }}
+   					</div>
+				</div>
+			</div>
+			<div class="body_author_intro">
+				<span class="body_author_intro_dot_1"><img src="../images/many_dots_4.png" alt=""></span>
+				<span class="body_author_intro_word">作者简介</span>
+				<span class="body_author_intro_dot_1"><img src="../images/many_dots_4.png" alt=""></span>
+{#                {% if book|key:"authorPhoto" !=  %}#}
+				    <div class="book_author_pic"><img src="{{ book|key:"authorPhoto" }}" alt=""></div>
+{#                {% endif %}#}
+                <div class="book_author_info"> {{ book|key:"authorInfo" }}
+				</div>
+			</div>
+			<div class="body_book_bottom">
+				<!-- <div id="abc"></div> -->
+				<a name="firstAnchor"></a>
+				<a href="#firstAnchor"></a>
+
+				<div class="body_book_bottom_inner">
+					<span class="body_book_intro_dot_1"><img src="../images/many_dots_3.png" alt=""></span>
+					<span class="body_book_intro_word">网友评论</span>
+					<span class="body_book_intro_dot_2"><img src="../images/many_dots_3.png" alt=""></span>
+					<div class="book_comment_nav">
+						<div class="book_comment_nav_time"><a class="book_comment_nav_time_a" href="">时间</a></div>
+{#						<div class="book_comment_nav_hot"><a class="book_comment_nav_hot_a" href="">热度</a></div>#}
+						<div class="book_comment_nav_write"><a class="book_comment_nav_write_a" href="">我来写评论</a></div>
+					</div>
+
+                    <form action="{% url "book_contain" book|key:"id" %}" method="post">
+                        {% csrf_token %}
+                        <div class="book_writecomment">
+                            <textarea class="book_writecomment_input" type="text" placeholder="#请在此输入文字" name="content"></textarea><!-- <input class="book_writecomment_input" type="text" -->
+                            <div class="book_writecomment_count"><input type="text" disabled="true" value="0"><span>/140</span></div>
+                            <div class="book_writecomment_login" style="display: none;">请先登录</div>
+                        </div>
+                        <div class="book_comment_pinfen">
+                            <span class="book_comment_pinfen_span">我要打分</span>
+                            <input class="total_star" style="display: none;" value="0" name="score"> </input>
+                            <div class="book_comment_pinfen_stars">
+                                <ul>
+                                    <li class="book_comment_pinfen_star"><img src="../images/stra.png" alt=""></li>
+                                    <li class="book_comment_pinfen_star"><img src="../images/stra.png" alt=""></li>
+                                    <li class="book_comment_pinfen_star"><img src="../images/stra.png" alt=""></li>
+                                    <li class="book_comment_pinfen_star"><img src="../images/stra.png" alt=""></li>
+                                    <li class="book_comment_pinfen_star"><img src="../images/stra.png" alt=""></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <button class="book_comment_publish" type="submit">发布评论</button>
+                    </form>
+					<div style="clear: both;"></div>
+					<div class="body_comment_contentout">
+
+						{% for key,value in comment.items %}
+						<ul class="body_commit_content_list" style="display: block;">
+							<li class="body_comment_content">
+                                <img class="body_comment_content_pic" src="{{ value|key:"head" }}"/>
+								<div class="body_comment_content_id">{{ nowPage|add:nowPage|add:nowPage|add:nowPage|add:key }}楼：{{ value|key:"username" }}</div>
+								<div class="body_comment_content_time">{{ value|key:"time" }}</div>
+								<div class="body_comment_star">
+									<div  style="display: none;" class="body_comment_star_word">{{ value|key:"score" }}</div>
+									<ul class="body_comment_star_list">
+									</ul>
+								</div>
+								<div class="body_comment_content_word">{{ value|key:"content" }}</div>
+{#								<div class="body_comment_good">#}
+{#									<div class="body_comment_good_pic"><img src="{% static "images/goog.png"%}" alt=""></div>#}
+{#									<span class="body_comment_good_amount">{{ value|key:"praise" }}</span>#}
+{##}
+{#								</div>#}
+							</li>
+
+						</ul>
+                        {% endfor %}
+
+					</div>
+					<div class="body_bottom_page">
+						<span class="last_page" onclick="prePage()">上一页</span>
+						<span class="first_page" onclick="jmpPage()">首页</span>
+						<span class="next_page" onclick="nextPage()">下一页</span>
+						<div class="last_page_tip" style="display: none;">已经是最后一页啦~</div>
+						<div class="first_page_tip" style="display: none;">已经是第一页啦~</div>
+					</div>
+                <script>
+                    function GetRequest() {
+                        var url = location.search; //获取url中"?"符后的字串
+                        var theRequest = {};
+                        var strs;
+                        if (url.indexOf("?") !== -1) {
+                            var str = url.substr(1);
+                            strs = str.split("&");
+                            for (var i = 0; i < strs.length; i++) {
+                                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+                            }
+                        }
+                       return theRequest;
+                    }
+
+                    function isNum(val) {
+                        if (val === "" || val == null) {
+                            return false;
+                        }
+                        var reg = /^[1-9]\d*$/;
+                        return reg.test(val);
+                    }
+
+                    var Request = new GetRequest();
+                    var page = Request['page'];
+                    if (!isNum(page)) {
+                        window.location.href = location.origin + location.pathname + "?page=1";
+                    }
+                    if (page > {{ pageCount }}) {
+                        window.location.href = location.origin + location.pathname + "?page={{ pageCount }}";
+                    }
+                    document.getElementById("pageNum").value = page;
+
+                    function prePage() {
+                        var time_set=true;
+                        if (page === "1") {
+
+                            if (time_set == true) {
+
+                                time_set = false;
+                                $(".first_page_tip").fadeIn();
+
+                                var time_1 = setInterval(function () {
+                                    console.log(time_set);
+
+                                }, 2000);
+
+                                $(".first_page_tip").delay(1000).fadeOut(function () {
+                                    clearInterval(time_1);
+                                    time_set = true;
+
+                                });
+
+                            }
+
+                        }
+                        else
+                            window.location.href = location.origin + location.pathname + "?page=" + (parseInt(page) - 1).toString() + "#firstAnchor";
+                    }
+                    function nextPage() {
+                        var time_set=true;
+                        if (page === "{{ pageCount }}") {
+                            if (time_set == true) {
+
+                                time_set = false;
+                                $(".last_page_tip").fadeIn();
+
+                                var time_1 = setInterval(function () {
+                                    console.log(time_set);
+
+                                }, 2000);
+
+                                $(".last_page_tip").delay(1000).fadeOut(function () {
+                                    clearInterval(time_1);
+                                    time_set = true;
+
+                                });
+
+                            }
+                        }
+                        else
+                            window.location.href = location.origin + location.pathname + "?page=" + (parseInt(page) + 1).toString() + "#firstAnchor";
+                    }
+                    function jmpPage() {
+                        window.location.href = location.origin + location.pathname + "?page=" + 1 + "#firstAnchor";
+                    }
+                </script>
+				</div>
+			</div>
+    <script src="../js/book_contain.js"></script>
+{% endblock %}

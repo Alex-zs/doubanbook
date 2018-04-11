@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>豆瓣文章</title>
+	<link rel="stylesheet" href="/static/css/font_csh.css">
+	<link rel="stylesheet" href="/static/css/article_contain.css">
+	<link rel="shortcut icon" href="/static/images/bitbug_favicon.ico">
+	<link rel="stylesheet" href="/static/css/footer.css">
+	<link rel="stylesheet" href="/static/css/header.css">
+</head>
+<body>
+	<div class="container">
+		<div class="header">
+			<div class="logo_1"><a href="/"><img src="/static/images/logo.png" alt=""></a></div>
+			<div class="nav_menu">
+				<a href="/articleList/1/1/"><img src="/static/images/book_list_logo.png" alt="shouye.html">
+				<span class="nav_menu_word">豆瓣文章</span></a>
+<!-- 				<ul class="nav_menu_ul">
+					<li class="nav_book">豆瓣读书</li>
+					<li class="nav_essey">豆瓣文章</li>
+				</ul> -->
+
+			</div>
+			<div class="search_box">
+				<input class="search_box_input" type="text" placeholder="请输入图书名称/作者">
+				<button class="search_box_button"></button>
+			</div>
+			<div class="nav_log_reg">
+				{% if request.user.is_authenticated %}
+				<span class="personal_center"><a class="personal_center_a" href="/userArticleList/" >个人中心</a></span>
+				<span class="log_out" ><a class="log_out_a" href="/accounts/logout/">注销</a></span>
+				{% else %}
+				<span class="login"><a class="login_a" href="/accounts/login/">登录</a></span>
+				<span class="registration"><a class="registration_a" href="/accounts/register">注册</a></span>
+				{% endif %}
+			</div>
+		</div>
+		<!-- <div class=""></div> -->
+		<div class="body_article_middle">
+
+			<h2 class="body_article_title">{{article.title}}</h2>
+			<div class="body_article_author">
+				<div class="body_article_author_pic"><img src="/{{request.user.head_img}}/" alt=""></div>
+				<span class="body_article_author_name">{{request.user.name}}</span>
+				<span class="body_article_author_time">{{article.update_time}}</span>
+				<div class="body_article_author_more">
+					<form action="/shoucang/{{article.id}}/" method="post">
+						{% csrf_token %}
+						<input type="hidden" id="article_id" name="article_id" value="{{article.id}}">
+						{% if isSave %}
+						<div class="body_article_author_love"><input  type="image" src="/static/images/grade_love.png"  alt=""></div>
+						{% else %}
+						<div class="body_article_author_love"><input  type="image" src="/static/images/author_article_love.png"  alt=""></div>
+						{% endif %}
+					</form>
+					{% if message %}
+					<script>
+						alert('{{message}}');
+					</script>
+					{% endif %}
+					
+				</div>					
+			</div>
+			<div class="body_article_middle_contain">
+				<img class="body_article_pic" src="/{{article.image}}" alt="">
+				{{article.content|safe}}
+				<p class="article_copyright">
+					© 本文版权归 {{article.author.name}}所有，任何形式转载请联系作者。
+				</p>	
+				<p class="article_copyright_learn">
+					<a href="http://www.wipo.int/copyright/zh/"> © 了解版权计划</a>
+				</p>
+
+
+			</div>
+		</div>
+		<div class="body_book_bottom">
+				<div class="body_book_bottom_inner">
+					<span class="body_book_intro_dot_1"><img src="/static/images/half_dots.png" alt=""></span>
+					<span class="body_book_intro_word">网友评论</span>
+					<span class="body_book_intro_dot_2"><img src="/static/images/half_dots.png" alt=""></span>
+					<div class="book_comment_nav">
+						<div class="book_comment_nav_time"><a class="book_comment_nav_time_a" href="">时间</a></div>
+						<div class="book_comment_nav_hot"><a class="book_comment_nav_hot_a" href="">热度</a></div>
+					</div>
+					<form action="/detail/{{article.id}}/" method="post">
+						{% csrf_token %}
+					<div class="book_writecomment">
+						<textarea class="book_writecomment_input" name="content" maxlength="140" required id="id_content" type="text" placeholder="#请在此输入文字"></textarea>
+						<div class="book_writecomment_count"><input type="text" value="0"><span>/140</span></div>
+						{% if not request.user.is_authenticated %}
+						<div class="book_writecomment_login" >请先登录</div>
+						{% endif %}
+						
+					</div>
+					
+
+				<input class="book_comment_publish" value="发布评论" type="submit">
+			</form>
+				<div style="clear: both;"></div>
+					<div class="body_comment_contentout time">
+						<ul class="body_comment_content_page_1">
+							{% for comment in commentOfArticle %}
+							<li class="body_comment_content">
+								<div class="body_comment_content_pic"><img src="/static/images/head_pic.png" alt=""></div>
+								<div class="body_comment_content_id">{{comment.author.name}}</div>
+								<div class="body_comment_content_time">{{comment.pub_date}}</div>
+
+								<div class="body_comment_content_word">{{comment.content}}</div>
+								<div class="body_comment_good">
+									
+							</li>
+							{% endfor %}
+						</ul>
+
+					</div>
+					<div class="body_bottom_page">
+						<span class="last_page" >上一页</span>
+						<span class="first_page">首页</span>
+						<span class="next_page">下一页</span>
+						<div class="last_page_tip" style="display: none;">已经是最后一页啦~</div>
+						<div class="first_page_tip" style="display: none;">已经是第一页啦~</div>
+					</div>
+				</div>
+			</div>
+			<div class="footer">
+			<div class="footer_inner">
+				<div class="footer_nav">
+					<ul class="footer_nav_list">
+						<li class="footer_nav_content_1"><a class="footer_nav_content_a_1" href="">关于我们</a></li>
+						<li class="footer_nav_content_2"><a class="footer_nav_content_a_2"  href="">加入我们</a></li>
+						<li class="footer_nav_content_3"><a class="footer_nav_content_a_3"  href="">合作伙伴</a></li>
+						<li class="footer_nav_content_4"><a  class="footer_nav_content_a_4" href="">广告服务</a></li>
+						<li class="footer_nav_content_5"><a class="footer_nav_content_a_5"  href="">常见问题</a></li>
+					</ul>
+				</div>
+			</div>
+			</div>
+	</div>
+</body>
+<script src="/static/js/jquery-3.2.1.min.js"></script>
+<script src="/static/js/article_contain.js"></script>
+</html>

@@ -1,0 +1,170 @@
+{% extends 'book_matherpage.html' %}
+{% load static %}
+{% load myfilter %}
+{% block head %}
+
+<head>
+	<meta charset="UTF-8">
+	<title>豆瓣读书</title>
+	<link rel="shortcut icon" href="../images/bitbug_favicon.ico">
+	<link rel="stylesheet" href="../css/font_csh.css">
+	<link rel="stylesheet" href="../css/book_list.css">
+	<link rel="stylesheet" href="../css/footer.css">
+	<link rel="stylesheet" href="../css/header.css">
+	<!-- 插件部分 -->
+
+</head>
+
+{% endblock %}
+{% block content%}
+    <div class="body">
+			<div class="article_save_tip" >您已成功添加到 个人中心-收藏</div>
+			<div class="body_top">
+				<div class="body_top_inner">
+					<ul class="body_top_nav_list">
+						<li class="body_top_nav"><a class="body_top_nav_a" href="">热门读刊</a><div class="body_top_nav_arrow"><img src="../images/arrow_1_down.png" alt=""></div></li>
+						<li class="body_top_nav"><a class="body_top_nav_a" href="">最新读物</a><div style="display: none;" class="body_top_nav_arrow"><img src="../images/arrow_1_down.png" alt=""></div></li>
+                        {% for key, value in labelOnTheTop.items %}
+						    <li class="body_top_nav"><a class="body_top_nav_a" href="{% url 'book_list_classify' value|key:"id" %}">{{ value|key:"name" }}</a><div style="display: none;" class="body_top_nav_arrow"><img src="../images/arrow_1_down.png" alt=""></div></li>
+					    {% endfor %}
+                    </ul>
+				</div>
+
+			</div>
+			<div class="body_middle">
+				<div class="body_middle_inner">
+					<ul class="body_middle_book_list">
+						{% for key,book in bookList.items %}
+                        <li class="body_middle_book">
+							<div class="body_middle_book_left">
+                                <div class="body_middle_book_left_img">
+									<a href="{% url 'book_contain' book|key:"id" %}">
+									<img src="{{ book|key:"cover" }}" alt=""></a>
+								</div>
+								<div class="body_middle_book_title">{{ book|key:"bookname" }}</div>
+
+							</div>
+							<div class="body_middle_book_right">
+								<p class="body_middle_book_info">{{ book|key:"introduction" }}</p>
+								<div class="body_middle_book_author">{{ book|key:"author" }}/{{ book|key:"press" }}</div>
+							</div>
+							<div class="body_middle_book_grade">
+								<span class="body_middle_book_grade_word">豆瓣评分</span>
+								<span class="body_middle_book_grade_num">{{ book|key:"score" }}</span>
+								<ul class="body_middle_book_grade_star">
+
+
+								</ul>
+							</div>
+							<div class="body_middle_book_more" >
+{#								<div class="body_middle_book_like"><img src="../images/love_white.png" alt=""></div>#}
+								<div class="body_middle_book_detail" onclick="location.href='{% url 'book_contain' book|key:"id" %}'">
+								<a class="body_middle_book_detail_a" href="{% url 'book_contain' book|key:"id" %}">详细信息</a></div>
+							</div>
+
+						</li>
+                        {% endfor %}
+
+					</ul>
+                    <div class="body_bottom_page">
+						<span class="last_page" onclick="prePage()">上一页</span>
+						<span class="first_page" onclick="jmpPage()">首页</span>
+						<span class="next_page" onclick="nextPage()">下一页</span>
+						<div class="last_page_tip" style="display: none;">已经是最后一页啦~</div>
+						<div class="first_page_tip" style="display: none;">已经是第一页啦~</div>
+					</div>
+
+				</div>
+
+			</div>
+                    <script>
+                        function GetRequest() {
+                            var url = location.search; //获取url中"?"符后的字串
+                            var theRequest = {};
+                            var strs;
+                            if (url.indexOf("?") !== -1) {
+                                var str = url.substr(1);
+                                strs = str.split("&");
+                                for (var i = 0; i < strs.length; i++) {
+                                    theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+                                }
+                            }
+                           return theRequest;
+                        }
+
+                        function isNum(val) {
+                            if (val === "" || val == null) {
+                                return false;
+                            }
+                            var reg = /^[1-9]\d*$/;
+                            return reg.test(val);
+                        }
+
+                        var Request = new GetRequest();
+                        var page = Request['page'];
+                        var url = location.origin + location.pathname + location.search;
+                        if (!isNum(page)) {
+                            window.location.href = location.origin + location.pathname + "?page=1";
+                        }
+                        if (page > {{ pageCount }}) {
+                            window.location.href = location.origin + location.pathname + "?page={{ pageCount }}";
+                        }
+                        document.getElementById("pageNum").value = page;
+
+                        function prePage() {
+                            var time_set=true;
+                            if (page === "1") {
+
+                                if (time_set == true) {
+
+                                    time_set = false;
+                                    $(".first_page_tip").fadeIn();
+
+                                    var time_1 = setInterval(function () {
+                                        console.log(time_set);
+
+                                    }, 2000);
+
+                                    $(".first_page_tip").delay(1000).fadeOut(function () {
+                                        clearInterval(time_1);
+                                        time_set = true;
+
+                                    });
+
+                                }
+
+                            }
+                            else
+                                window.location.href = location.origin + location.pathname + "?page=" + (parseInt(page) - 1).toString() + "#firstAnchor";
+                        }
+                        function nextPage() {
+                            var time_set=true;
+                            if (page === "{{ pageCount }}") {
+                                if (time_set == true) {
+
+                                    time_set = false;
+                                    $(".last_page_tip").fadeIn();
+
+                                    var time_1 = setInterval(function () {
+                                        console.log(time_set);
+
+                                    }, 2000);
+
+                                    $(".last_page_tip").delay(1000).fadeOut(function () {
+                                        clearInterval(time_1);
+                                        time_set = true;
+
+                                    });
+
+                                }
+                            }
+                            else
+                                window.location.href = location.origin + location.pathname + "?page=" + (parseInt(page) + 1).toString() + "#firstAnchor";
+                        }
+                        function jmpPage() {
+                            window.location.href = location.origin + location.pathname + "?page=" + 1 + "#firstAnchor";
+                        }
+                    </script>
+
+    <script src="../js/book_list.js"></script>
+{% endblock %}

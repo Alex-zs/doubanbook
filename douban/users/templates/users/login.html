@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>用户登录</title>
+	<link rel="shortcut icon" href="/static/images/bitbug_favicon.ico">
+	<link rel="stylesheet" href="/static/css/login.css">
+	<link rel="stylesheet" href="/static/css/footer.css">
+	<link rel="stylesheet" href="/static/css/font_csh.css">
+	<script src="/static/js/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+<script>
+    $(function(){
+
+        $('.captcha').click(function(){
+        console.log('click');
+         $.getJSON("/captcha/refresh/",
+                  function(result){
+             $('.captcha').attr('src', result['image_url']);
+             $('#id_captcha_0').val(result['key'])
+          });});
+
+    $('#id_captcha_1').blur(function(){
+  // #id_captcha_1为输入框的id，当该输入框失去焦点是触发函数
+        json_data={
+            'response':$('#id_captcha_1').val(), // 获取输入框和隐藏字段id_captcha_0的数值
+            'hashkey':$('#id_captcha_0').val()
+        }
+        $.getJSON('/ajax_val', json_data, function(data){
+ //ajax发送
+            $('#captcha_status').remove()
+            if(data['status']){ //status返回1为验证码正确， status返回0为验证码错误， 在输入框的后面写入提示信息
+                $('#id_img_1').after('<span id="captcha_status" ></span>')
+            }else{
+                 $('#id_img_1').after('<span id="captcha_status" >验证码错误</span>')
+            }
+        });
+    });
+    })
+    </script>
+
+	<div class="container">
+		<div class="body">	
+			<div class="logo_2" style="opacity: 0;margin-top: 98px;"><a style="display: block;" href="/"><img src="/static/images/logo_4.png" alt=""></a></div>
+	
+			<h3 style="opacity: 0">在豆瓣，遇见生活的美好</h3>
+			<div class="login_form">
+				<ul>
+					<li class="login_form_login"><a class="login_form_a_login" href="/accounts/login/">用户登录</a></li>
+					<li class="login_form_regist"><a class="login_form_a_regist" href="/accounts/register/">用户注册</a></li>
+					<div style="clear: both;"></div>
+				</ul>
+
+				<form method="post" action=".">
+		{% csrf_token %}
+				<div class="login_form_inner">
+					<div class="login_form_name">
+						<div class="login_form_name_word">用户名</div>
+						<input placeholder="example@xxx.com" name="username" autofocus maxlength="254" required id="id_username" class="login_form_name_input" type="text">
+					</div>
+					<div class="regist_form_code_forget"><a class="regist_form_code_forget_a" href="/accounts/password_reset/">忘记密码</a></div>
+					<div class="login_form_code">
+						<div class="login_form_code_word">密码</div>
+						<input name="password" required id="id_password"  class="login_form_code_input" type="password">
+					</div>
+					{% if form.errors %}
+			{% include "users/partials/errors.html" %}
+		{% endif %}
+					<div class="login_form_verify">
+						<div class="login_form_verify_word">验证码</div>
+
+							<input type="hidden" name="captcha_0" id="id_captcha_0" value="{{hashkey}}">
+						<input  class="login_form_verify_input" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" id="id_captcha_1" name="captcha_1" type="text">
+						<div class="login_form_verify_image">
+						<img src="{{ image_url }}" id="id_img_1" alt="captcha" width="150px" height="50px" class="captcha login_form_verify_image_img" /></div>
+						<div style="clear: both;"></div>
+					</div>
+					<div style="clear: both;"></div>
+					<input type="submit" value="欢迎回来" class="login_form_verify_button">
+					<input type="hidden" name="next" value="/index">
+				</div>
+			</div>
+		</div>
+	</div>
+	
+</body>
+<script src="/static/js/login.js"></script>
+</html>

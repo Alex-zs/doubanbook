@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>个人中心</title>
+	<link rel="shortcut icon" href="/static/images/bitbug_favicon.ico">
+	<link rel="stylesheet" href="/static/css/font_csh.css">
+	<link rel="stylesheet" href="/static/css/footer.css">
+	<link rel="stylesheet" href="/static/css/personal_change.css">
+</head>
+<body>
+	<div class="container">
+		<div class="body">
+			<div class="logo_2" style="opacity: 0;margin-top: 98px;"><a style="display: block;" href="/"><img src="/static/images/logo_4.png" alt=""></a></div>
+			<h3 style="opacity: 0">在豆瓣，遇见生活的美好</h3>
+			<div class="regist_form">
+				<div class="personal_change_title">个人信息修改</div>
+
+				<form  name="regist_form" enctype="multipart/form-data" method="post" action="/informationChange/">
+					{% csrf_token %}
+				<div class="regist_form_inner">
+					<div class="regist_form_name">
+						<div class="regist_form_name_word">用户名</div>
+						<input required name="name" placeholder="请输入您的昵称" class="regist_form_name_input" type="text" >
+					</div>
+					<div class="personal_change_sex">
+						<div class="personal_change_sex_word">性别</div>
+						<input required type="radio" name="sex" value="男">男
+						<input required type="radio" name="sex" value="女">女
+					</div>
+						
+					
+					<div class="personal_change_sign">
+						<div class="personal_change_sign_word">个性签名</div>
+						<div class="personal_change_sign_input">
+							<textarea name="motto" id="" cols="35" rows="5" onkeydown="return checkenter()"></textarea>
+						</div>
+					</div>
+					<div style="clear: both;"></div>
+
+					<div class="personal_change_tou">
+						<div class="personal_change_tou_word">头像</div>
+						<input type="file" name="image" value="添加图片" required onchange="checkFileExt(this)" ></div>
+					<div style="clear: both;"></div>
+					
+					<div style="clear: both;"></div>
+					<button class="regist_form_verify_button" type="submit" >完成</button>
+					</form>
+				</div>
+			</div>
+		</div>
+
+	</div>
+</body>
+
+<script src="/static/js/jquery-3.2.1.min.js"></script>
+<script>
+
+// $(".personal_change_sign_input textarea").each(function(){
+
+// 	var comment_length = $(this).val().length ;
+// 	if( comment_length >30){
+// 		$(this).val($(this).val().substring(0,30))
+
+// 	}
+// })
+function checkenter(){
+	$(".personal_change_sign_input textarea").keydown(function(event){
+
+	if(event.keyCode == 13 || event.keyCode == 32)
+	{
+	window.event.returnValue = false;
+	}
+	else{
+		var comment_length = $(".personal_change_sign_input textarea").val().length ;
+	if( comment_length >25){
+		$(this).val($(this).val().substring(0,25))
+	}
+	}
+	})
+
+	
+}
+
+ 
+function checkFileExt(filename)
+{
+ var flag = false; //状态
+ var arr = ["jpg","png","gif"];
+ //取出上传文件的扩展名
+ var index = filename.value.lastIndexOf(".");
+ var ext = filename.value.substr(index+1);
+ ext = ext.toLowerCase()
+ //循环比较
+ for(var i=0;i<arr.length;i++)
+ {
+  if(ext == arr[i])
+  {
+   flag = true; //一旦找到合适的，立即退出循环
+   break;
+  }
+ }
+ //条件判断
+ if(flag)
+ {
+  // document.write("文件名合法");
+ }else
+ {
+  alert("文件不合法");
+  filename.value = "";
+  return false;
+ }
+}
+
+
+
+</script>
+<script src="/static/js/regist.js"></script>
+</html>

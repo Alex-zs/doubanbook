@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>密码重置</title>
+	<link rel="shortcut icon" href="/static/images/bitbug_favicon.ico">
+	<link rel="stylesheet" href="/static/css/font_csh.css">
+	<!-- <link rel="stylesheet" href="../css/footer.css"> -->
+	<link rel="stylesheet" href="/static/css/code_forget.css">
+	<script src="/static/js/jquery-3.2.1.min.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="body">
+			<div class="logo_2" style="opacity: 0;margin-top: 98px;"><a style="display: block;" href="shouye.html"><img src="/static/images/logo_2.png" alt=""></a></div>
+			<h3 style="opacity: 0">在豆瓣，遇见生活的美好</h3>
+			<div class="regist_form">
+				<!-- <ul>
+					<li class="regist_form_login"><a class="regist_form_a_login" href="login.html">用户登录</a></li>
+					<li class="regist_form_regist"><a class="regist_form_a_regist" href="regist.html">新用户注册</a></li>
+					<div style="clear: both;"></div>
+				</ul> -->
+				<div class="regist_form_inner">
+
+					<form  method="post" action=".">
+						{% csrf_token %}
+					<div class="regist_form_name">
+						<div class="regist_form_name_word">用户名</div>
+						<input placeholder="example@xxx.com" class="regist_form_name_input" type="email" name="email" maxlength="254" required id="id_email">
+					</div>
+				<div class="regist_form_verify">
+						<div class="regist_form_verify_word">验证码</div>
+						<input id="id_captcha_0" name="captcha_0" type="hidden" value="{{hashkey}}" />
+						<input class="regist_form_verify_input" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false" id="id_captcha_1" name="captcha_1" type="text">
+						<img src="{{ image_url }}" alt="captcha" width="100px" height="50px" class="captcha" /></div>
+
+						<div>
+							<input type="submit" value="发送验证码" class="regist_form_verify_button">
+						</div>
+					</div>
+					<div style="clear: both;"></div>
+					<div style="clear: both;"></div>
+					</form>
+
+				</div>
+			</div>
+		</div>
+		<!-- <div class="footer">
+			<div class="footer_inner">
+				<div class="footer_nav">
+					<ul class="footer_nav_list">
+						<li class="footer_nav_content_1"><a class="footer_nav_content_a_1" href="">关于我们</a></li>
+						<li class="footer_nav_content_2"><a class="footer_nav_content_a_2"  href="">加入我们</a></li>
+						<li class="footer_nav_content_3"><a class="footer_nav_content_a_3"  href="">合作伙伴</a></li>
+						<li class="footer_nav_content_4"><a  class="footer_nav_content_a_4" href="">广告服务</a></li>
+						<li class="footer_nav_content_5"><a class="footer_nav_content_a_5"  href="">常见问题</a></li>
+					</ul>
+				</div>
+				<div class="footer_nav_middle">
+					<ul class="footer_nav_middle_list">
+						<li class="footer_nav_middle_xinlang"><a class="footer_nav_middle_a_xinlang" href=""><img src="../images/xinlang_lgo.png" alt=""></a></li>
+						<li class="footer_nav_middle_wechat"><a class="footer_nav_middle_a_wechat" href=""><img src="../images/weixin_logo.jpg" alt=""></a></li>
+						<li class="footer_nav_middle_chrome"><a class="footer_nav_middle_a_chrome" href=""><img src="../images/liulan——logo.png" alt=""></a></li>
+					</ul>
+					<div style="clear: both;"></div>
+				</div>
+				<div class="footer_bottom_address">© 2005－2018 douban.com, all rights reserved 北京豆网科技有限公司</div>
+			</div>
+
+		</div> -->
+	</div>
+	<script>
+    $(function(){
+
+        $('.captcha').click(function(){
+        console.log('click');
+         $.getJSON("/captcha/refresh/",
+                  function(result){
+             $('.captcha').attr('src', result['image_url']);
+             $('#id_captcha_0').val(result['key'])
+          });});
+
+    $('#id_captcha_1').blur(function(){
+  // #id_captcha_1为输入框的id，当该输入框失去焦点是触发函数
+        json_data={
+            'response':$('#id_captcha_1').val(), // 获取输入框和隐藏字段id_captcha_0的数值
+            'hashkey':$('#id_captcha_0').val()
+        }
+        $.getJSON('/ajax_val', json_data, function(data){
+ //ajax发送
+            $('#captcha_status').remove()
+            if(data['status']){ //status返回1为验证码正确， status返回0为验证码错误， 在输入框的后面写入提示信息
+                $('#id_captcha_1').after('<span id="captcha_status" ></span>')
+            }else{
+                 $('#id_captcha_1').after('<span id="captcha_status" ></span>')
+            }
+        });
+    });
+    })
+    </script>
+</body>
+<script src="/static/js/code_forget.js"></script>
+<script src="/static/js/regist.js"></script>
+</html>

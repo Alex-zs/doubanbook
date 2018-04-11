@@ -1,0 +1,215 @@
+{% load myfilter %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>豆瓣首页</title>
+	<link rel="shortcut icon" href="/static/images/bitbug_favicon.ico">
+	<link rel="stylesheet" href="/static/css/font_csh.css">
+	<link rel="stylesheet" href="/static/css/shouye.css">
+	<link rel="stylesheet" href="/static/css/footer.css">
+</head>
+<body>
+	<div class="loading_page"></div>
+	<div class="container">
+		<div class="containner_inner">
+			
+		
+		<div class="header">
+			<div class="logo_1"><a href="/"><img src="/static/images/logo.png" alt="" value="点我回主页"></a></div>
+			<div class="nav_menu">
+				<ul class="nav_menu_ul">
+					<li class="nav_book"><a class="nav_book_a" href="{% url "book_list" %}">豆瓣读书</a></li>
+					<li class="nav_essey"><a class="nav_essey_a" href="/articleList/1/1/">豆瓣文章</a></li>
+				</ul>
+			</div>
+			<div class="search_box">
+				<input class="search_box_input" type="text"  placeholder="请输入关键词">
+				<button class="search_box_button"></button>
+			</div>
+			<div class="nav_log_reg">
+				{% if request.user.is_authenticated %}
+				<span class="personal_center"><a class="personal_center_a" href="/userArticleList/" >个人中心</a></span>
+				<span class="log_out" ><a class="log_out_a" href="/accounts/logout/">注销</a></span>
+				{% else %}
+				<span class="login"><a class="login_a" href="/accounts/login/">登录</a></span>
+				<span class="registration"><a class="registration_a" href="/accounts/register">注册</a></span>
+				{% endif %}
+			</div>
+		</div>
+		<div class="body">
+			<div class="body_top">
+				<div class="body_top_inner">
+				<!-- 	<ul class="nav_choose">
+						<li><img src="/static/images/choose.png" alt=""></li>
+						<li><img src="/static/images/choose.png" alt=""></li>
+						<li><img src="/static/images/no_choose.png" alt=""></li>
+						<li><img src="/static/images/choose.png" alt=""></li>
+						<li><img src="/static/images/choose.png" alt=""></li>
+
+					</ul> -->
+					<div class="body_top_hover_left"><img style="display: none;" src="/static/images/sfq_arrow_left.png" alt=""></div>
+					<div class="body_top_hover_right"><img style="display: none" src="/static/images/sfq_arrow_right.png" alt=""></div>
+					<ul class="body_top_inner_sfq">
+						{% for article in article_1 %}
+						<li class="body_top_sfq_pic_1 sfq_pic">
+							<a href="/detail/{{article.id}}">
+							<div style="display: none;" class="body_top_sfq_word">{{article.title}}</div>
+							<!-- <div class="body_top_sfq_pic_hover"></div> -->
+							<img class="body_top_sfq_pic_img" src="/{{article.image}}" alt="">
+							</a>
+						</li>
+						{% endfor %}
+						{% for article in article_2 %}
+						<li class="body_top_sfq_pic_2 sfq_pic">
+							<a href="/detail/{{article.id}}">
+							<div style="display: none;" class="body_top_sfq_word">{{article.title}}</div>
+							<!-- <div class="body_top_sfq_pic_hover"></div> -->
+							<img class="body_top_sfq_pic_img" src="/{{article.image}}" alt="">
+							</a>
+						</li>
+						{% endfor %}
+						{% for article in article_3 %}
+						<li class="body_top_sfq_pic_3 sfq_pic">
+							<a href="/detail/{{article.id}}">
+							<div style="display: none;" class="body_top_sfq_word">{{article.title}}</div>
+							<!-- <div class="body_top_sfq_pic_hover"></div> -->
+							<img class="body_top_sfq_pic_img" src="/{{article.image}}" alt="">
+							</a>
+						</li>
+						{% endfor %}
+						{% for article in article_4 %}
+						<li class="body_top_sfq_pic_4 sfq_pic">
+							<a href="/detail/{{article.id}}">
+							<div style="display: none;" class="body_top_sfq_word">{{article.title}}</div>
+							<!-- <div class="body_top_sfq_pic_hover"></div> -->
+							<img class="body_top_sfq_pic_img" src="/{{article.image}}" alt="">
+							</a>
+						</li>
+						{% endfor %}
+						{% for article in article_5 %}
+						<li class="body_top_sfq_pic_5 sfq_pic">
+							<a href="/detail/{{article.id}}">
+							<div style="display: none;" class="body_top_sfq_word">{{article.title}}</div>
+							<!-- <div class="body_top_sfq_pic_hover"></div> -->
+							<img class="body_top_sfq_pic_img" src="/{{article.image}}" alt="">
+							</a>
+						</li>
+						{% endfor %}
+
+					</ul>
+					<!-- /*<div style="clear:both;"></div>*/ -->
+				</div>
+			<!-- 	<div class="red"></div>
+				<div class="blue"></div> -->
+
+			</div>
+			<div class="body_hotessey">
+				<div class="body_hotessey_inner">
+					<h2 class="hotessey_title_h">
+						<span class="hotessey_title_name">热门文章</span>
+
+						<img class="hotessey_title_dot" src="/static/images/many_dots.png" alt="">
+						<span class="hotessey_title_more"><a class="hotessey_title_more_a" href="/articleList/1/1/">更多</a></span>
+
+					</h2>
+					<div class="body_hotessey_content">
+						
+						<ul class="hotessey_essay_list">
+						{% for article in article_photo %}	
+							<li class="hotessey_photoalbum_1">
+								<div class="hotessey_photoalbum_1_a_div">
+								<a class="hotessey_photoalbum_1_a" href="/detail/{{article.id}}"><img src="/{{article.image}}" alt=""></a></div>
+								<h6 class="hotessey_photoalbum_name_1"><a class="hotessey_photoalbum_name_1_a" href="/detail/{{article.id}}">{{article.title}}</a></h6>
+							</li>
+							{% endfor %}
+						</ul>
+					
+						<ul class="hotessey_essay_list">
+							{% for article in  article_list %}
+							<li class="hotessey_essay hotessey_essay_1">
+								<div class="hotessey_essay_word_1">
+
+									<div class="hotessey_essay_title"><a class="hotessey_essay_title_a" href="/detail/{{article.id}}">{{article.title}}</a></div>
+									<div class="hotessey_essay_user_pic">
+										<a class="hotessey_essay_title_a" href="/detail/{{article.id}}">
+										<img src="/{{request.user.head_img}}" alt="">
+									</a></div>									<span class="hotessey_essay_publish_time">{{article.update_time}}</span>
+									<div class="hotessey_essay_scan">
+										<img src="/static/images/essey_scan.png" alt="">
+										<span class="hotessey_essay_scan_amount_1">{{article.views}}</span>
+									</div>
+								</div>
+								<div class="hotessey_essay_pic_div">
+								<img class="hotessey_essay_pic" src="/{{article.image}}" alt="">
+							</div>
+							</li>
+							{% endfor %}
+							<div style="clear: both;"></div>
+							
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="body_hotbook">
+				<div class="body_hotbook_inner">
+					<h2 class="hotbook_title_h">
+						<span class="hotbook_title_name">热门书刊</span>
+
+						<img class="hotbook_title_dot" src="../images/many_dots_2.png" alt="">
+						<span class="hotbook_title_more"><a class="hotbook_title_more_a" href="{% url 'book_list' %}">更多</a></span>
+
+					</h2>
+					<div class="body_hotbook_content">
+						<ul class="body_hotbook_content_list">
+                            {% for key, value in book.items %}
+							<li class="body_hotbook_book">
+								<div class="body_hotbook_a_1_div">
+								<a  class="body_hotbook_a_1" href="{% url 'book_contain' value|key:"id" %}"><img src="{{ value|key:"cover" }}" alt=""></a></div>
+								<div class="body_hotbook_book_title"><a  class="body_hotbook_book_title_a" href="{% url 'book_contain' value|key:"id" %}">{{ value|key:"bookname" }}</a></div>
+								<div class="body_hotbook_book_want">收藏人数：{{ value|key:"loveCount" }}</div>
+
+{#								<div class="body_hotbook_book_love"><img src="../images/love.png" alt=""></div>#}
+
+							</li>
+
+							{% endfor %}
+						</ul>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		<div style="clear: both;"></div>
+		<div class="footer">
+			<div class="footer_inner">
+				<div class="footer_nav">
+					<ul class="footer_nav_list">
+						<li class="footer_nav_content_1"><a class="footer_nav_content_a_1" href="">关于我们</a></li>
+						<li class="footer_nav_content_2"><a class="footer_nav_content_a_2"  href="">加入我们</a></li>
+						<li class="footer_nav_content_3"><a class="footer_nav_content_a_3"  href="">合作伙伴</a></li>
+						<li class="footer_nav_content_4"><a  class="footer_nav_content_a_4" href="">广告服务</a></li>
+						<li class="footer_nav_content_5"><a class="footer_nav_content_a_5"  href="">常见问题</a></li>
+					</ul>
+				</div>
+				<div class="footer_nav_middle">
+					<ul class="footer_nav_middle_list">
+						<li class="footer_nav_middle_xinlang"><a class="footer_nav_middle_a_xinlang" href=""><img src="/static/images/xinlang_lgo.png" alt=""></a></li>
+						<li class="footer_nav_middle_wechat"><a class="footer_nav_middle_a_wechat" href=""><img src="/static/images/weixin_logo.jpg" alt=""></a></li>
+						<li class="footer_nav_middle_chrome"><a class="footer_nav_middle_a_chrome" href=""><img src="/static/images/liulan——logo.png" alt=""></a></li>
+					</ul>
+					<div style="clear: both;"></div>
+				</div>
+				<div class="footer_bottom_address">© 2005－2018 douban.com, all rights reserved 北京豆网科技有限公司</div>
+			</div>
+
+		</div>
+		</div>
+	</div>
+	
+</body>
+<script src="/static/js/jquery-3.2.1.min.js"></script>
+<script src="/static/js/shouye.js"></script>
+</html>

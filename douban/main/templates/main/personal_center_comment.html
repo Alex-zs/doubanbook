@@ -1,0 +1,43 @@
+{% extends 'user_base.html' %}
+{% block link %}
+	<link rel="stylesheet" href="/static/css/font_csh.css">
+	<link rel="stylesheet" href="/static/css/personal_center_comment.css">
+	<link rel="shortcut icon" href="/static/images/bitbug_favicon.ico">
+	<link rel="stylesheet" href="/static/css/footer.css">
+{% endblock %}
+
+{% block content %}
+
+				<div class="personal_body_save_article_content">
+					<!-- <div class="personal_body_save_article_inner"> -->
+						{% for comment in commentList %}
+						<ul>
+							<li class="body_comment_content_1">
+								
+								<div class="body_comment_content_id_1">{{request.user.name}}</div>
+								<div class="body_comment_content_time_1">{{comment.pub_date|date:"Y年m月d日"}}</div>
+								<div class="body_comment_star">
+									<ul class="body_comment_star_list">
+										<li class="body_comment_stars"><img src="/static/images/star——3.png" alt=""></li>
+										<li class="body_comment_stars"><img src="/static/images/star——3.png" alt=""></li>
+										<li class="body_comment_stars"><img src="/static/images/star——3.png" alt=""></li>
+										<li class="body_comment_stars"><img src="/static/images/star——3.png" alt=""></li>
+									</ul>
+								</div>
+								<div class="body_comment_content_word_1">{{comment.content}}</div>
+								
+									<a href="/delete/comment/{{comment.id}}/"><div class="personal_body_save_article_modify">删除</div>
+									
+								
+															</li>
+							
+						</ul>
+					{% endfor %}
+						</div>	
+			{% endblock %}
+
+			{% block script %}
+
+			<script src="/static/js/jquery-3.2.1.min.js"></script>
+			<script src="/static/js/personal_center_save_book.js"></script>
+{% endblock %}

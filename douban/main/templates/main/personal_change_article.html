@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>个人中心</title>
+	<link rel="stylesheet" href="/static/css/font_csh.css">
+	<link rel="stylesheet" href="/static/css/personal_center_write_article.css">
+	<link rel="shortcut icon" href="/static/images/bitbug_favicon.ico">
+	<link rel="stylesheet" href="/static/css/footer.css">
+	<script type="text/javascript" src="/static/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" src="/static/ueditor/ueditor.all.min.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="container_inner">
+			<div class="personal_nav">
+			<img  class="personal_nav_logo" src="/static/images/logo_4.png" alt="">
+			<h3 class="personal_nav_title">{{ request.user.name }}的个人主页</h3>
+			<div style="clear: both;"></div>
+			</div>
+			<div class="personal_body">
+				<div class="personal_body_arrow_1"><img src="/static/images/write_article_arrow.png" alt=""></div>
+				<div class="personal_body_perinfo">
+					<div class="personal_bofy_perinfo_pic"><img src="../images/head_pic.png" alt=""></div>
+					<h6 class="personal_body_perinfo_name">{{ request.user.name }}</h6>
+					<img class="personal_body_perinfo_sex" src="/static/images/sex_1.png" alt="">
+					<img class="personal_body_perinfo_write" src="/static/images/write_ar_2.png" alt="">
+					<div class="personal_body_perinfo_words">这个人很懒，什么都没留下哦！</div>
+				</div>
+				<div class="personal_body_menu">
+					<ul>
+						<li class="personal_body_save_books">
+							<a href="personal_center_save_book.html">
+								<span class="personal_body_save_books_span">我收藏的书籍</span>
+								
+								<img class="personal_body_save_books_img" src="/static/images/save_arrow_nochoose_1.png" alt="">
+							</a>
+						</li>
+							<li class="personal_body_save_articles">
+								<a href="personal_center_save_article.html">
+								<span class="personal_body_save_articles_span">我收藏的文章</span>
+								
+								<img class="personal_body_save_articles_img" src="/static/images/save_arrow_nochoose_1.png" alt="">
+							</a>
+						</li>
+						<li class="personal_body_save_comment">
+							<a href="personal_center_comment.html">
+								<span class="personal_body_save_comment_span">我编写的评论</span>
+								
+								<img class="personal_body_save_comment_img" src="/static/images/save_arrow_nochoose_1.png" alt="">
+							</a>
+						</li>
+						<li class="personal_body_personal_article">
+							<a href="/userArticleList/">
+								<span class="personal_body_personal_article_span">我编写的文章</span>
+								
+								<img class="personal_body_personal_article_img" src="/static/images/save_arrow_nochoose_1.png" alt="">
+							</a>
+						</li>
+
+					</ul>
+				</div>
+
+				<div class="personal_body_write">
+						<a  class="personal_body_write_a" href="/write/">
+						<span class="personal_body_write_span">我要写文章</span>
+						<img  class="personal_body_write_img" src="/static/images/write_aticle_2.png" alt="">
+					</a>
+				</div>
+				<div class="personal_body_write_article">
+
+                    <form action="." method="post">
+                        {% csrf_token %}
+					<div class="personal_body_write_title"><input name="title" maxlength="256" required id="id_title"  class="personal_body_write_title_input" value="{{article.title}}" type="text"></div>
+
+									<div class="personal_body_write_content">
+
+                                         <script class="personal_body_write_content_text" id="id_content"   name="content"  style="display: inline-block;" type="text/plain">
+                                         	{{article.content|safe}}
+
+ </script>
+<script type="text/javascript">
+
+    var id_content = UE.getEditor('id_content',{'initialFrameWidth': 600, 'initialFrameHeight': 300, 'serverUrl': '/ueditor/controller/?imageMaxSize=1204000&imagePathFormat=static%2Fimg%2F&filePathFormat=main%2Fstatic%2Fimg%2F'});
+     id_content.ready(function(){
+
+     });
+</script></div>
+
+						
+						<select  name="article_cate" id="id_article_cate">
+							<option value="{{article.article_cate}}" selected>{{article.article_cate}}</option>
+  <option value="小说">小说</option>
+
+  <option value="散文">散文</option>
+
+  <option value="戏曲">戏曲</option>
+
+  <option value="剧本">剧本</option>
+
+  <option value="诗歌">诗歌</option>
+
+  <option value="寓言">寓言</option>
+
+  <option value="童话">童话</option>
+
+  <option value="书信">书信</option>
+
+  <option value="议论文">议论文</option>
+
+  <option value="说明文">说明文</option>
+
+  <option value="记叙文">记叙文</option>
+
+  <option value="报告">报告</option>
+
+  <option value="总结">总结</option>
+
+  <option value="新闻">新闻</option>
+</select>
+<input type="submit" value="提交">
+</form>
+					</div> 				
+			
+				</div>
+			</div>
+		</div>
+
+		<div class="footer">
+			<div class="footer_inner">
+				<div class="footer_nav">
+					<ul class="footer_nav_list">
+						<li class="footer_nav_content_1"><a class="footer_nav_content_a_1" href="">关于我们</a></li>
+						<li class="footer_nav_content_2"><a class="footer_nav_content_a_2"  href="">加入我们</a></li>
+						<li class="footer_nav_content_3"><a class="footer_nav_content_a_3"  href="">合作伙伴</a></li>
+						<li class="footer_nav_content_4"><a  class="footer_nav_content_a_4" href="">广告服务</a></li>
+						<li class="footer_nav_content_5"><a class="footer_nav_content_a_5"  href="">常见问题</a></li>
+					</ul>
+				</div>
+				<div class="footer_nav_middle">
+					<ul class="footer_nav_middle_list">
+						<li class="footer_nav_middle_xinlang"><a class="footer_nav_middle_a_xinlang" href=""><img src="/static/images/xinlang_lgo.png" alt=""></a></li>
+						<li class="footer_nav_middle_wechat"><a class="footer_nav_middle_a_wechat" href=""><img src="/static/images/weixin_logo.jpg" alt=""></a></li>
+						<li class="footer_nav_middle_chrome"><a class="footer_nav_middle_a_chrome" href=""><img src="/static/images/liulan——logo.png" alt=""></a></li>
+					</ul>
+					<div style="clear: both;"></div>
+				</div>
+				<div class="footer_bottom_address">© 2005－2018 douban.com, all rights reserved 北京豆网科技有限公司</div>
+			</div>
+
+		</div>
+		
+		
+	</div>
+	
+</body>
+<script src="/static/js/jquery-3.2.1.min.js"></script>
+<script src="/static/js/personal_center_write_article.js"></script>
+</html>
