@@ -21,8 +21,9 @@
 				<div class="personal_body_perinfo">
 					<div class="personal_bofy_perinfo_pic"><img src="../images/head_pic.png" alt=""></div>
 					<h6 class="personal_body_perinfo_name">阿浦爱曼联</h6>
+					<img class="personal_body_perinfo_sex" src="../images/female.png" alt="">
 					<img class="personal_body_perinfo_sex" src="../images/sex_1.png" alt="">
-					<img class="personal_body_perinfo_write" src="../images/write_ar_2.png" alt="">
+					<a href="personal_change.html"><img class="personal_body_perinfo_write" src="../images/write_ar_2.png" alt=""></a>
 					<textarea  placeholder ="这个人很懒，什么都没留下哦！" class="personal_body_perinfo_words" disabled="disabled" onkeydown="return checkenter()"></textarea>
 				</div>
 				<div class="personal_body_menu">
@@ -66,18 +67,34 @@
 					</a>
 				</div>
 				<div class="personal_body_write_article">
+					<form action="." enctype="multipart/form-data" method="post">
 					<div class="personal_body_write_title"><input class="personal_body_write_title_input" placeholder="#请在此添加标题" type="text"></div>
 					<div class="personal_body_write_add_img">
-						<div class="personal_body_write_add_img_tip">#单击此添加图片</div>
+					<!-- <div class="personal_body_write_add_img_tip">#单击此添加图片</div> -->
+						<input type="file" name="image" required id="id_image" >
 
 					</div>
-					<div class="personal_body_write_content"><textarea class="personal_body_write_content_text" value="#请在此添加正文" type="text"></textarea>
+					<div class="personal_body_write_content"><!-- < --><!-- textarea class="personal_body_write_content_text" value="#请在此添加正文" type="text"></textarea> -->
 					<div class="personal_body_write_content_tip" >#请在此添加正文</div>
+					</div>
+					<div class="article_type">
+					<select  name="article_cate" id="id_article_cate">
+					  <option value="小说" selected>小说</option>
+
+					  <option value="散文">散文</option>
+
+					  <option value="感悟">感悟</option>
+
+					  <option value="新闻">新闻</option>
+					</select>
 					</div>
 					<button class="personal_body_write_submit" type="submit">发表</button>
 					
 			
 				</div>
+
+			</form>
+
 			</div>
 			
 		</div>

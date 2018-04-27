@@ -23,8 +23,11 @@
 
 			</div>
 			<div class="search_box">
-				<input class="search_box_input" type="text" placeholder="请输入图书名称/作者">
-				<button class="search_box_button"></button>
+				<form action="/search/article/" method="get">
+					{% csrf_token %}
+				<input class="search_box_input" name="keyword" type="text"  placeholder="请输入关键词">
+				<button type="submit" class="search_box_button"></button>
+				</form>
 			</div>
 			<div class="nav_log_reg">
 				{% if request.user.is_authenticated %}
@@ -41,8 +44,8 @@
 
 			<h2 class="body_article_title">{{article.title}}</h2>
 			<div class="body_article_author">
-				<div class="body_article_author_pic"><img src="/{{request.user.head_img}}/" alt=""></div>
-				<span class="body_article_author_name">{{request.user.name}}</span>
+				<div class="body_article_author_pic"><img src="/{{article.author.head_img}}/" alt=""></div>
+				<span class="body_article_author_name">{{article.author.name}}</span>
 				<span class="body_article_author_time">{{article.update_time}}</span>
 				<div class="body_article_author_more">
 					<form action="/shoucang/{{article.id}}/" method="post">
@@ -80,30 +83,28 @@
 					<span class="body_book_intro_dot_1"><img src="/static/images/half_dots.png" alt=""></span>
 					<span class="body_book_intro_word">网友评论</span>
 					<span class="body_book_intro_dot_2"><img src="/static/images/half_dots.png" alt=""></span>
-					<div class="book_comment_nav">
-						<div class="book_comment_nav_time"><a class="book_comment_nav_time_a" href="">时间</a></div>
-						<div class="book_comment_nav_hot"><a class="book_comment_nav_hot_a" href="">热度</a></div>
-					</div>
+					
 					<form action="/detail/{{article.id}}/" method="post">
 						{% csrf_token %}
 					<div class="book_writecomment">
-						<textarea class="book_writecomment_input" name="content" maxlength="140" required id="id_content" type="text" placeholder="#请在此输入文字"></textarea>
+						<textarea class="book_writecomment_input" name="content" maxlength="140" required id="id_content" type="text" placeholder="#请在此输入文字" oninput="count_comment()"></textarea>
 						<div class="book_writecomment_count"><input type="text" value="0"><span>/140</span></div>
 						{% if not request.user.is_authenticated %}
 						<div class="book_writecomment_login" >请先登录</div>
 						{% endif %}
-						
+						<div class="book_writecomment_count_tip_less">*评论字数不得少于15个字</div>
+						<div class="book_writecomment_count_tip_more">*评论字数不得多于140个字</div>
 					</div>
 					
 
-				<input class="book_comment_publish" value="发布评论" type="submit">
+				<input class="book_comment_publish" value="发布评论" type="submit" onclick="return comment();">
 			</form>
 				<div style="clear: both;"></div>
 					<div class="body_comment_contentout time">
 						<ul class="body_comment_content_page_1">
 							{% for comment in commentOfArticle %}
 							<li class="body_comment_content">
-								<div class="body_comment_content_pic"><img src="/static/images/head_pic.png" alt=""></div>
+								<div class="body_comment_content_pic"><img src="{{comment.author.head_img}}" alt=""></div>
 								<div class="body_comment_content_id">{{comment.author.name}}</div>
 								<div class="body_comment_content_time">{{comment.pub_date}}</div>
 
@@ -116,9 +117,9 @@
 
 					</div>
 					<div class="body_bottom_page">
-						<span class="last_page" >上一页</span>
-						<span class="first_page">首页</span>
-						<span class="next_page">下一页</span>
+						<span class="last_page" ></span>
+						<span class="first_page"></span>
+						<span class="next_page"></span>
 						<div class="last_page_tip" style="display: none;">已经是最后一页啦~</div>
 						<div class="first_page_tip" style="display: none;">已经是第一页啦~</div>
 					</div>
@@ -135,6 +136,15 @@
 						<li class="footer_nav_content_5"><a class="footer_nav_content_a_5"  href="">常见问题</a></li>
 					</ul>
 				</div>
+				<div class="footer_nav_middle">
+                        <ul class="footer_nav_middle_list">
+                            <li class="footer_nav_middle_xinlang"><a class="footer_nav_middle_a_xinlang" href=""><img src="../images/xinlang_lgo.png" alt=""></a></li>
+                            <li class="footer_nav_middle_wechat"><a class="footer_nav_middle_a_wechat" href=""><img src="../images/weixin_logo.jpg" alt=""></a></li>
+                            <li class="footer_nav_middle_chrome"><a class="footer_nav_middle_a_chrome" href=""><img src="../images/liulan——logo.png" alt=""></a></li>
+                        </ul>
+                        <div style="clear: both;"></div>
+                    </div>
+                    <div class="footer_bottom_address">© 2005－2018 douban.com, all rights reserved 北京豆网科技有限公司</div>
 			</div>
 			</div>
 	</div>

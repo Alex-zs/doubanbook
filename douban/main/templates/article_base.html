@@ -30,8 +30,11 @@
 
 			</div>
 			<div class="search_box">
-				<input class="search_box_input" type="text" placeholder ="请输入关键词">
-				<button class="search_box_button"></button>
+				<form action="/search/article/" method="get">
+					{% csrf_token %}
+				<input class="search_box_input" name="keyword" type="text"  placeholder="请输入关键词">
+				<button type="submit" class="search_box_button"></button>
+				</form>
 			</div>
 			<div class="nav_log_reg">
 				{% if request.user.is_authenticated %}

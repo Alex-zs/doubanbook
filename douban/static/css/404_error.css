@@ -19,12 +19,16 @@ li{
 	border: 1px solid white;
 }
 .logo_look{
-	width: 244px;
+	width: 200px;
 	/*height: 269px;*/
 	height: auto;
 	margin:0px auto;
-	margin-top: 90px;
-	margin-bottom: 66px;
+	margin-top: 70px;
+	margin-bottom: 38px;
+}
+.logo_look img{
+	width: 200px;
+	height: auto;
 }
 h1{
 	/*width: 120px;
@@ -43,7 +47,7 @@ h1{
 
 	line-height: 25px;
 	text-align: center;
-	margin-top: 98px;
+	margin-top: 40px;
 	/*display: block;*/
 	/*padding-top: 98px;*/
 	color: #ffffff;

@@ -13,7 +13,7 @@
 	
 	<div class="container">
 		<div class="body">
-			<div class="logo_2" style="opacity: 0;margin-top: 98px;"><a style="display: block;" href="/"><img src="/static/images/logo_2.png" alt=""></a></div>
+			<div class="logo_2" style="opacity: 0;margin-top: 98px;"><a style="display: block;" href="/"><img src="/static/images/logo_4.png" alt=""></a></div>
 			<h3 style="opacity: 0">在豆瓣，遇见生活的美好</h3>
 			<div style="height: 600px" class="regist_form">
 				<ul>
@@ -27,6 +27,7 @@
 					<div class="regist_form_name">
 						<div class="regist_form_name_word">用户名</div>
 						<input maxlength="255" name="email" required id="id_email"  placeholder="example@xxx.com" class="regist_form_name_input" type="email">
+						<div class="regist_form_name_input_tip">*请输入正确的邮箱地址</div>
 					</div>
 					<div style="clear: both;"></div>
 					
@@ -34,15 +35,30 @@
 
 						<div class="regist_form_code_word">密码</div>
 						<input name="password1" required id="id_password1" class="regist_form_code_input" type="password">
+						<div class="regist_form_code_word_tip">*密码长度必须大于6位</div>
 					</div>
 					<div class="regist_form_code">
 
 						<div class="regist_form_code_word">密码</div>
 						<input name="password2" required id="id_password2" placeholder="请再次输入密码" class="regist_form_code_again_input" type="password">
+						<div class="regist_form_code_again_input_tip">*两次密码不一致，请重新输入</div>
 					</div>
-					{% if form.errors %}
-			{% include "users/partials/errors.html" %}
-		{% endif %}
+
+					<div class="errors_tip_1">{% if form.errors %}
+					{{form.errors.email }}
+					{% endif %}
+					</div>
+					<div class="errors_tip_3">
+					{% if form.errors.password2 %}
+					{{ form.errors.password2}}
+					{% endif %}
+					</div>
+					<div class="errors_tip_4">
+					{% if form.errors.captcha %}
+					{{ form.errors.captcha }}
+					{% endif %}
+					</div>
+
 					<div class="regist_form_code">
 						<div class="regist_form_code_word">验证码</div>
 						<div><input type="hidden" name="captcha_0" id="id_captcha_0" value="{{hashkey}}">

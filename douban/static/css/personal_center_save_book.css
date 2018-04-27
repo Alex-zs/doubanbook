@@ -73,7 +73,7 @@ li{
 	width: 34px;
 	height: 34px;
 	border-radius: 17px;
-
+	overflow: hidden;
 	position: absolute;
 	top: 30px;
 	left: 26px;
@@ -85,11 +85,11 @@ li{
 }
 .personal_body_perinfo_name{
 
-	font-size: 18px;
+	font-size: 14px;
 	letter-spacing: 1px;
 	color: #333333;
 	position: absolute;
-	top: 32px;
+	top: 36px;
 	left: 81px;
 }
 .personal_body_perinfo_sex{
@@ -298,19 +298,26 @@ li{
 	margin-top: 50px;
 }
 
-.personal_body_save_book_1,.personal_body_save_book_2,.personal_body_save_book_3,.personal_body_save_book_4,.personal_body_save_book_5,.personal_body_save_book_6,.personal_body_save_book_7,.personal_body_save_book_8,.personal_body_save_book_9,.personal_body_save_book_10,.personal_body_save_book_11,.personal_body_save_book_12{
+.personal_body_save_book_1{
 	position: relative;
 	float: left;
 	margin-left: 40px;
 }
+.personal_body_save_book_pic_1_div{
+	width: 112px;
+	height: 157px;
+	overflow: hidden;
+}
+
 .personal_body_save_book_1{
 	margin-left: 0px;
+	margin-right: 30px;
 }
-.personal_body_save_book_pic_1,.personal_body_save_book_pic_2,.personal_body_save_book_pic_3,.personal_body_save_book_pic_4,.personal_body_save_book_pic_5,.personal_body_save_book_pic_6,.personal_body_save_book_pic_7,.personal_body_save_book_pic_8,.personal_body_save_book_pic_9,.personal_body_save_book_pic_10,.personal_body_save_book_pic_11,.personal_body_save_book_pic_12,.personal_body_save_book_pic_13{
+.personal_body_save_book_pic_1{
 	width: 112px;
 	height: 157px;
 }
-.personal_body_save_book_title_1,.personal_body_save_book_title_2,.personal_body_save_book_title_3,.personal_body_save_book_title_4,.personal_body_save_book_title_5,.personal_body_save_book_title_6,.personal_body_save_book_title_7,.personal_body_save_book_title_8,.personal_body_save_book_title_9,.personal_body_save_book_title_10,.personal_body_save_book_title_11,.personal_body_save_book_title_12{
+.personal_body_save_book_title_1{
 	font-size: 14px;
 	letter-spacing: 1px;
 	width: 110px;
@@ -321,14 +328,22 @@ li{
 	position: absolute;
 	top: 0px;
 	right: 0px;
-	width: 20px;
+	width: 33px;
 	height: 157px;
 	background-color: #00A896;
 	opacity: 0.6;
 }
 .personal_body_save_book_more_1 img{
-	width: 14px;
-	height: 14px;
+	width: 22px;
+	height: 22px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -11px;
+	margin-top: -11px;
+}
+.personal_body_save_book_more_1 img:hover{
+	cursor: pointer;
 }
 .personal_body_save_book_del_1{
 	background-color: rgba(0,168,150,0.65);

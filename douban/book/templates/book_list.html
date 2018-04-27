@@ -21,9 +21,10 @@
 			<div class="article_save_tip" >您已成功添加到 个人中心-收藏</div>
 			<div class="body_top">
 				<div class="body_top_inner">
+                    <input class="body_top_input" type="text" value="{{ upArrow }}" style="display: none;">
 					<ul class="body_top_nav_list">
-						<li class="body_top_nav"><a class="body_top_nav_a" href="">热门读刊</a><div class="body_top_nav_arrow"><img src="../images/arrow_1_down.png" alt=""></div></li>
-						<li class="body_top_nav"><a class="body_top_nav_a" href="">最新读物</a><div style="display: none;" class="body_top_nav_arrow"><img src="../images/arrow_1_down.png" alt=""></div></li>
+						<li class="body_top_nav"><a class="body_top_nav_a" href="{% url 'book_list_sort' 0 0 %}">热门读刊</a><div style="display: none;" class="body_top_nav_arrow"><img src="../images/arrow_1_down.png" alt=""></div></li>
+						<li class="body_top_nav"><a class="body_top_nav_a" href="{% url 'book_list_sort' 0 1 %}">最新读物</a><div style="display: none;" class="body_top_nav_arrow"><img src="../images/arrow_1_down.png" alt=""></div></li>
                         {% for key, value in labelOnTheTop.items %}
 						    <li class="body_top_nav"><a class="body_top_nav_a" href="{% url 'book_list_classify' value|key:"id" %}">{{ value|key:"name" }}</a><div style="display: none;" class="body_top_nav_arrow"><img src="../images/arrow_1_down.png" alt=""></div></li>
 					    {% endfor %}
@@ -109,10 +110,11 @@
                         if (page > {{ pageCount }}) {
                             window.location.href = location.origin + location.pathname + "?page={{ pageCount }}";
                         }
+                        var time_set=true;
                         document.getElementById("pageNum").value = page;
 
                         function prePage() {
-                            var time_set=true;
+
                             if (page === "1") {
 
                                 if (time_set == true) {
@@ -138,7 +140,6 @@
                                 window.location.href = location.origin + location.pathname + "?page=" + (parseInt(page) - 1).toString() + "#firstAnchor";
                         }
                         function nextPage() {
-                            var time_set=true;
                             if (page === "{{ pageCount }}") {
                                 if (time_set == true) {
 

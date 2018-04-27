@@ -1,6 +1,7 @@
 
 import functools
 import warnings
+from django.shortcuts import render
 
 from django.conf import settings
 # Avoid shadowing the login() and logout() views below.
@@ -10,8 +11,11 @@ from django.contrib.auth import (
 )
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import (
-    AuthenticationForm, PasswordChangeForm, PasswordResetForm, SetPasswordForm,
+    PasswordChangeForm, PasswordResetForm, SetPasswordForm,
 )
+
+from .forms import AuthenticationForm
+
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
 from django.http import HttpResponseRedirect, QueryDict
@@ -106,6 +110,23 @@ def register(request,
                 send_activation_email(**opts)
                 user_registered.send(sender=user.__class__, request=request, user=user)
             return redirect(post_registration_redirect)
+        else:
+            current_site = get_current_site(request)
+            hashkey = CaptchaStore.generate_key()
+            image_url = captcha_image_url(hashkey)
+            context = {
+                'form': form,
+                'site': current_site,
+                'site_name': current_site.name,
+                'title': _('Register'),
+                'image_url':image_url,
+                'hashkey':hashkey,
+                }
+
+            if extra_context is not None: 
+                context.update(extra_context)
+            return render(request, template_name, context)
+
     else:
         form = registration_form()
 
@@ -347,11 +368,13 @@ def login(request, template_name='registration/login.html',
         'The login() view is superseded by the class-based LoginView().',
         RemovedInDjango21Warning, stacklevel=2
     )
+
     hashkey = CaptchaStore.generate_key()
     image_url = captcha_image_url(hashkey)
+
     extra_context = {'image_url':image_url,'hashkey':hashkey}
     return LoginView.as_view(
-        template_name=template_name,
+        template_name = template_name,
         redirect_field_name=redirect_field_name,
         form_class=authentication_form,
         extra_context=extra_context,

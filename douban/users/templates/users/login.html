@@ -33,7 +33,7 @@
             if(data['status']){ //status返回1为验证码正确， status返回0为验证码错误， 在输入框的后面写入提示信息
                 $('#id_img_1').after('<span id="captcha_status" ></span>')
             }else{
-                 $('#id_img_1').after('<span id="captcha_status" >验证码错误</span>')
+                 $('#id_img_1').after('<span id="captcha_status" >*验证码错误!</span>')
             }
         });
     });
@@ -64,7 +64,7 @@
 						<div class="login_form_code_word">密码</div>
 						<input name="password" required id="id_password"  class="login_form_code_input" type="password">
 					</div>
-					{% if form.errors %}
+				{% if form.errors %}
 			{% include "users/partials/errors.html" %}
 		{% endif %}
 					<div class="login_form_verify">
@@ -85,5 +85,6 @@
 	</div>
 	
 </body>
+	
 <script src="/static/js/login.js"></script>
 </html>

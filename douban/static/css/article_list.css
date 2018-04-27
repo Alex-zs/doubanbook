@@ -192,6 +192,7 @@ color: #C9C9C9;
 	width: 1004px;
 	margin: 0px auto;
 	border:1px solid #F7F7F7;
+	min-height: 290px;
 
 
 }
@@ -234,6 +235,9 @@ color: #C9C9C9;
 	margin-top: 20px;
 	margin-bottom: 20px;
 
+}
+.body_middle_article_title a{
+	color: #333333; 
 }
 .body_middle_article_info{
 	width: 562px;
@@ -314,6 +318,9 @@ cursor: pointer;
 .first_page{
 	margin-left: 78px;
 	margin-right: 78px;
+}
+.first_page a,.next_page a{
+	color: #347898;
 }
 .last_page:hover,.first_page:hover,.next_page:hover{
 	cursor: pointer;

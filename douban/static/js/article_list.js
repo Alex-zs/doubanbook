@@ -1,18 +1,30 @@
 //导航栏鼠标
-var nav_now=0;
+// $(".body_top_nav_list li").each(function(){
+//   if($(this).css('display','block'))
+//   {
+    
+
+//   }
+// })
+//导航栏鼠标
+var index = $(".body_top_input").val() - 0 - 1;
+$(".body_top_nav_arrow").eq(index).siblings('div').css('display','none');
+$(".body_top_nav_arrow").eq(index).css('display','block');
+
+// if($(".body_top_nav_list li div").css('display') == 'block')
+// {
+//   var select_nav = $(".body_top_nav_list li div").index(".body_top_nav_arrow");
+// }
+
 $(".body_top_nav_list li").mouseenter(function(){
-	$(this).find("div").css('display', 'block');
-	$("body_top_nav").eq(nav_now).find("div").css('display', 'block');
+  // var num = $(this).index();
+  $(this).find("div").css('display','block');
+  $("body_top_nav").eq(index).find("div").css('display', 'block');
 });
 $(".body_top_nav_list li").mouseleave(function(){
-	$(this).find("div").css('display', 'none');
-	$(".body_top_nav").eq(nav_now).find("div").css('display', 'block');
+  $(this).find("div").css('display','none');
+  $(".body_top_nav").eq(index).find("div").css('display', 'block');
 });
-
-$(".body_top_nav_list li").click(function(){
-  $(this).find("div").css('display', 'block');
-  $(this).siblings('').find("div").css('display', 'none');
-})
 
 //头部固定
 $(document).ready(function(){  
@@ -227,18 +239,54 @@ $(".body_middle_article_like").each(function(index){
 //     }
 
 // })
+//动态改变图片的大小
+var t_img; // 定时器
+var isLoad = true; // 控制变量
 
+// 判断图片加载状况，加载完成后回调
+isImgLoad(function(){
+    // 加载完成
 $(".body_middle_article_left img").each(function(){
   if($(this).width()/$(this).height() >1.61)
  {
    $(this).css({'height':'201px','width':'auto'});
+   var left = ($(this).width()/2 - $(".body_middle_article_left").width()/2);
+  $(this).css('margin-right',-left);
+
  }
  else{
   $(this).css({'height':'auto','width':'325px'});
+  var height = ($(this).height()/2 - $(".body_middle_article_left").height()/2);
+ $(this).css('margin-top',-height);
+
  }
 })
+})
 
-
+// 判断图片加载的函数
+function isImgLoad(callback){
+    // 注意我的图片类名都是cover，因为我只需要处理cover。其它图片可以不管。
+    // 查找所有封面图，迭代处理
+    $('.body_middle_article_left img').each(function(){
+        // 找到为0就将isLoad设为false，并退出each
+        if(this.height === 0){
+            isLoad = false;
+            return false;
+        }
+    });
+    // 为true，没有发现为0的。加载完毕
+    if(isLoad){
+        clearTimeout(t_img); // 清除定时器
+        // 回调函数
+        callback();
+    // 为false，因为找到了没有加载完成的图，将调用定时器递归
+    }else{
+        isLoad = true;
+        t_img = setTimeout(function(){
+            isImgLoad(callback); // 递归扫描
+        },300); // 我这里设置的是500毫秒就扫描一次，可以自己调整
+    }
+}
 //选中框
 // $("input").focus(function(){
 //   $(this).css('border-color','rgba(0,0,0,0.4)')
@@ -247,11 +295,21 @@ $(".body_middle_article_left img").each(function(){
 //   $(this).css('border-color','#D9D9D9')
 // })
 
-$(".personal_body_save_article_title_1 a").each(function(){
+$(".body_middle_article_title a").each(function(){
 
   var comment_length = $(this).text().length ;
-  if( comment_length >8){
-    $(this).text($(this).text().substring(0,8))
+  if( comment_length >16){
+    $(this).text($(this).text().substring(0,16))
+    $(this).html($(this).html()+'...');
+  }
+})
+
+
+$(".body_middle_article_info").each(function(){
+
+  var comment_length = $(this).text().length ;
+  if( comment_length >80){
+    $(this).text($(this).text().substring(0,80))
     $(this).html($(this).html()+'...');
   }
 })

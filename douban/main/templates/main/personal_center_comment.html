@@ -10,8 +10,9 @@
 
 				<div class="personal_body_save_article_content">
 					<!-- <div class="personal_body_save_article_inner"> -->
-						{% for comment in commentList %}
+						
 						<ul>
+							{% for comment in articleCommentList %}
 							<li class="body_comment_content_1">
 								
 								<div class="body_comment_content_id_1">{{request.user.name}}</div>
@@ -30,9 +31,32 @@
 									
 								
 															</li>
+															{% endfor %}
+
+																{% for comment in bookCommentList %}
+							<li class="body_comment_content_1">
+								
+								<div class="body_comment_content_id_1">{{request.user.name}}</div>
+								<div class="body_comment_content_time_1">{{comment.createTime|date:"Y年m月d日"}}</div>
+								<div class="body_comment_star">
+									<ul class="body_comment_star_list">
+										<li class="body_comment_stars"><img src="/static/images/star——3.png" alt=""></li>
+										<li class="body_comment_stars"><img src="/static/images/star——3.png" alt=""></li>
+										<li class="body_comment_stars"><img src="/static/images/star——3.png" alt=""></li>
+										<li class="body_comment_stars"><img src="/static/images/star——3.png" alt=""></li>
+									</ul>
+								</div>
+								<div class="body_comment_content_word_1">{{comment.content}}</div>
+								
+									<a href="/book/commentdelete/{{comment.id}}/"><div class="personal_body_save_article_modify">删除</div>
+									
+								
+															</li>
+															{% endfor %}
+
 							
 						</ul>
-					{% endfor %}
+					
 						</div>	
 			{% endblock %}
 

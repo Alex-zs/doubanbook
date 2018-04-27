@@ -19,7 +19,7 @@
     <div class="body">
 			<div class="body_top">
 				<div class="body_book_info">
-					<div class="body_book_pic"><img src="{{ book|key:"cover" }}" alt=""></div>
+					<div class="body_book_pic"><img class="cover" src="{{ book|key:"cover" }}" alt=""></div>
 					<div class="body_book_word">
 						<h5 class="body_book_title">{{ book|key:"bookname" }}</h5>
 						<div class="body_book_author">作者：<span>{{ book|key:"author" }}</span></div>
@@ -102,7 +102,7 @@
 				<span class="body_author_intro_word">作者简介</span>
 				<span class="body_author_intro_dot_1"><img src="../images/many_dots_4.png" alt=""></span>
 {#                {% if book|key:"authorPhoto" !=  %}#}
-				    <div class="book_author_pic"><img src="{{ book|key:"authorPhoto" }}" alt=""></div>
+				    <div class="book_author_pic"><img class="cover" src="{{ book|key:"authorPhoto" }}" alt=""></div>
 {#                {% endif %}#}
                 <div class="book_author_info"> {{ book|key:"authorInfo" }}
 				</div>
@@ -125,9 +125,14 @@
                     <form action="{% url "book_contain" book|key:"id" %}" method="post">
                         {% csrf_token %}
                         <div class="book_writecomment">
-                            <textarea class="book_writecomment_input" type="text" placeholder="#请在此输入文字" name="content"></textarea><!-- <input class="book_writecomment_input" type="text" -->
+                            <textarea class="book_writecomment_input" type="text" placeholder="#请在此输入文字" name="content" oninput="count_comment()"></textarea><!-- <input class="book_writecomment_input" type="text" -->
                             <div class="book_writecomment_count"><input type="text" disabled="true" value="0"><span>/140</span></div>
-                            <div class="book_writecomment_login" style="display: none;">请先登录</div>
+                            <div class="book_writecomment_count_tip_less">*评论字数不得少于15个字</div>
+						<div class="book_writecomment_count_tip_more">*评论字数不得多于140个字</div>
+                           {% if not request.user.is_authenticated %}
+						<div class="book_writecomment_login" >请先登录</div>
+							
+						{% endif %}
                         </div>
                         <div class="book_comment_pinfen">
                             <span class="book_comment_pinfen_span">我要打分</span>
@@ -142,7 +147,7 @@
                                 </ul>
                             </div>
                         </div>
-                        <button class="book_comment_publish" type="submit">发布评论</button>
+                        <button class="book_comment_publish" type="submit" onclick="return comment();">发布评论</button>
                     </form>
 					<div style="clear: both;"></div>
 					<div class="body_comment_contentout">
@@ -150,7 +155,7 @@
 						{% for key,value in comment.items %}
 						<ul class="body_commit_content_list" style="display: block;">
 							<li class="body_comment_content">
-                                <img class="body_comment_content_pic" src="{{ value|key:"head" }}"/>
+                                <div class="body_comment_content_pic_div"><img class="body_comment_content_pic cover" src="{{ value|key:"head" }}"/></div>
 								<div class="body_comment_content_id">{{ nowPage|add:nowPage|add:nowPage|add:nowPage|add:key }}楼：{{ value|key:"username" }}</div>
 								<div class="body_comment_content_time">{{ value|key:"time" }}</div>
 								<div class="body_comment_star">
@@ -208,10 +213,10 @@
                     if (page > {{ pageCount }}) {
                         window.location.href = location.origin + location.pathname + "?page={{ pageCount }}";
                     }
+                    var time_set=true;
                     document.getElementById("pageNum").value = page;
 
                     function prePage() {
-                        var time_set=true;
                         if (page === "1") {
 
                             if (time_set == true) {
@@ -237,7 +242,6 @@
                             window.location.href = location.origin + location.pathname + "?page=" + (parseInt(page) - 1).toString() + "#firstAnchor";
                     }
                     function nextPage() {
-                        var time_set=true;
                         if (page === "{{ pageCount }}") {
                             if (time_set == true) {
 

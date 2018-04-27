@@ -4,6 +4,7 @@ from django.shortcuts import redirect
 from users.models import User
 from .forms import *
 from .models import *
+from django.db.models import Q
 from book.models import Book, Collection
 from django.http import HttpResponse
 from django.template.loader import render_to_string
@@ -11,7 +12,9 @@ from django.core.files.base import ContentFile
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404
 import logging
-
+from django.core.paginator import EmptyPage
+from django.shortcuts import render_to_response
+from book.models import Comment as bookComment
 
 def userPage(request):
     article_list = Article.objects.filter(isHomeArticle=True).order_by('-update_time')[:11]
@@ -63,6 +66,8 @@ def userPage(request):
 
 
 def userInformation(request):
+    if not request.user.is_authenticated():
+        return redirect('/')
     if request.method == 'POST':
         user = User.objects.get(pk=request.user.id)
         user.name = request.POST['name']
@@ -77,6 +82,8 @@ def userInformation(request):
 
 
 def WriteArticle(request):
+    if not request.user.is_authenticated():
+        return redirect('/')
     if request.method == 'POST':
         form = ArticleForm(request.POST, request.FILES)
         if form.is_valid():
@@ -84,17 +91,24 @@ def WriteArticle(request):
             article.author = request.user
             article.save()
             return render(request, 'main/personal_center_write_article.html')
+        else:
+            return render(request, 'main/personal_center_write_article.html')
     else:
-    	return render(request, 'main/personal_center_write_article.html')
+        return render(request, 'main/personal_center_write_article.html')
 
 
 def userArticle(request):
+    if not request.user.is_authenticated():
+        return redirect('/')
     article_list = Article.objects.filter(author=request.user).order_by('-update_time')
     return render(request, 'main/personal_center_personal_article.html', {'article_list': article_list})
 
 
 def deleteArticle(request, id):
-    article = Article.objects.get(id=id)
+    if not request.user.is_authenticated():
+        return redirect('/')
+    user = request.user
+    article = Article.objects.get(id=id,author=user)
     comment = comment_article.objects.filter(article=article)
     article.delete()
     comment.delete()
@@ -102,9 +116,11 @@ def deleteArticle(request, id):
 
 
 def changeArticle(request, id):
+    if not request.user.is_authenticated():
+        return redirect('/')
     article = Article.objects.get(id=id)
     if request.method == 'POST':
-        form = ArticleForm(request.POST, instance=article)
+        form = ArticleForm(request.POST,request.FILES, instance=article)
         if form.is_valid():
             j = form.save(commit=False)
             j.save()
@@ -138,26 +154,34 @@ def article_detail(request, id):
 
 
 def commentList(request):
-    commentList = comment_article.objects.filter(author=request.user).order_by('-pub_date')
-    return render(request, 'main/personal_center_comment.html', {'commentList': commentList})
+    articleCommentList = comment_article.objects.filter(author=request.user).order_by('-pub_date')
+    bookCommentList = bookComment.objects.filter(owner_id=request.user.id).order_by('-createTime')
+    return render(request, 'main/personal_center_comment.html', {
+        'articleCommentList': articleCommentList,
+        'bookCommentList':bookCommentList})
 
 
 def articleCate(request, cate, page):
     if cate == '1':
-        article_list = Article.objects.all().order_by('-views')[:15]
-    if cate == '2':
-        article_list = Article.objects.all().order_by('-update_time')[:15]
-    if cate == '3':
-        article_list = Article.objects.filter(article_cate='小说').order_by('-update_time')[:15]
-    if cate == '4':
-        article_list = Article.objects.filter(article_cate='散文').order_by('-update_time')[:15]
-    if cate == '5':
-        article_list = Article.objects.filter(article_cate='感悟').order_by('-update_time')[:15]
-    if cate == '6':
-        article_list = Article.objects.filter(article_cate='新闻').order_by('-update_time')[:15]
-
+        article_list = Article.objects.all().filter(isDisplay = True).order_by('-views')[:15]
+    elif cate == '2':
+        article_list = Article.objects.all().filter(isDisplay = True).order_by('-update_time')[:15]
+    elif cate == '3':
+        article_list = Article.objects.filter(isDisplay = True).filter(article_cate='小说').order_by('-update_time')[:15]
+    elif cate == '4':
+        article_list = Article.objects.filter(isDisplay = True).filter(article_cate='散文').order_by('-update_time')[:15]
+    elif cate == '5':
+        article_list = Article.objects.filter(isDisplay = True).filter(article_cate='感悟').order_by('-update_time')[:15]
+    elif cate == '6':
+        article_list = Article.objects.filter(isDisplay = True).filter(article_cate='新闻').order_by('-update_time')[:15]
+    else:
+        cate = '1'
     paginator = Paginator(article_list, 5)
-    article_page = paginator.page(page)
+    try:
+        article_page = paginator.page(page)
+    except:
+        page = 1
+        article_page = paginator.page(page)
     if not request.user.is_authenticated():
         if request.method == 'POST':
             message = '请登录后收藏!'
@@ -190,8 +214,8 @@ def article_shoucang(request, article_id):
     article = Article.objects.get(id=article_id)
     commentOfArticle = comment_article.objects.filter(article=article).order_by('-pub_date')
     if not request.user.is_authenticated():
-        message = '请登录后收藏'
-        return redirect('/detail/' + article_id + '/')
+        message = '请登录后收藏!'
+        return render(request,'main/article_contain.html',{'article':article,'message':message})
     else:
         if request.method == 'POST':
             article_id = request.POST['article_id']
@@ -209,17 +233,23 @@ def article_shoucang(request, article_id):
 
 
 def saveArticle(request):
+    if not request.user.is_authenticated():
+        return redirect('/')
     save_list = article_save.objects.filter(user=request.user).order_by('-time')
     return render(request, 'main/personal_center_save_article.html', {'save_list': save_list})
 
 
 def deleteSave(request, article_id):
+    if not request.user.is_authenticated():
+        return redirect('/')
     article = Article.objects.get(id=article_id)
     saveArticle = article_save.objects.get(article=article)
     saveArticle.delete()
     return redirect('/saveArticle/')
 
 def deleteComment(request,comment_id):
+    if not request.user.is_authenticated():
+        return redirect('/')
     comment = comment_article.objects.get(pk=comment_id)
     comment.delete()
     return redirect('/comment/')
@@ -243,4 +273,43 @@ def display_book_collect(request):
         }
     back["book"] = books
     return render(request, 'main/personal_center_save_book.html', back)
+
+def searchArticle(request):
+    try:
+        page = request.GET['page']
+    except:
+        page = 1
+    try:
+        page = int(page)
+    except:
+        return redirect('/')
+    try:
+        st = request.GET['keyword']
+    except:
+        return redirect('/')
+    allArticle = Article.objects.filter(Q(title__contains=st) | Q(content__contains=st))
+    if not allArticle:
+        return render(request,'main/search.html',{'message':"结果为空！"})
+    articleList = allArticle.order_by('-views')
+    paginator = Paginator(articleList, 5)
+    try:
+        articleList = paginator.page(page)
+        lastPage = page - 1
+        nextPage = page + 1
+    except EmptyPage:
+        articleList = paginator.page(1)
+        page = 1
+        lastPage = 1
+        nextPage = 1
+    
+    return render(request,'main/search.html',{
+        'articleList':articleList,
+        'keyword':st,
+        'page':page,
+        'lastPage':lastPage,
+        'nextPage':nextPage
+        })
+
+def page_not_found(request):
+    return render_to_response('404_error.html')
 # Create your views here.

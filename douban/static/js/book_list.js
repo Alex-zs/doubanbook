@@ -110,14 +110,19 @@ $(document).ready(function(){
 
 
 //导航栏鼠标
-var nav_now=0;
+if($(".body_top_nav_list li div").css('display') == 'block')
+{
+  var select_nav = $(".body_top_nav_list li div").index(".body_top_nav_arrow");
+}
+
 $(".body_top_nav_list li").mouseenter(function(){
-  $(this).find("div").css('display', 'block');
-  $("body_top_nav").eq(nav_now).find("div").css('display', 'block');
+  // var num = $(this).index();
+  $(this).find("div").css('display','block');
+  $("body_top_nav").eq(select_nav).find("div").css('display', 'block');
 });
 $(".body_top_nav_list li").mouseleave(function(){
-  $(this).find("div").css('display', 'none');
-  $(".body_top_nav").eq(nav_now).find("div").css('display', 'block');
+  $(this).find("div").css('display','none');
+  $(".body_top_nav").eq(select_nav).find("div").css('display', 'block');
 });
 
 $(".body_top_nav_list li").click(function(){
@@ -141,17 +146,53 @@ $(".search_box_input").blur(function(){
 
 });
 
+//动态改变图片的大小
+var t_img; // 定时器
+var isLoad = true; // 控制变量
 
+// 判断图片加载状况，加载完成后回调
+isImgLoad(function(){
+    // 加载完成
 $(".body_middle_book_left_img img").each(function(){
   if($(this).width()/$(this).height() >0.867)
  {
    $(this).css({'height':'173px','width':'auto'});
+   var left = ($(this).width()/2 - $(".body_middle_book_left_img").width()/2);
+  $(this).css('margin-left',-left);
+
  }
  else{
   $(this).css({'height':'auto','width':'124px'});
+  var height = ($(this).height()/2 - $(".body_middle_book_left_img").height()/2);
+ $(this).css('margin-top',-height);
  }
 })
+})
 
+// 判断图片加载的函数
+function isImgLoad(callback){
+    // 注意我的图片类名都是cover，因为我只需要处理cover。其它图片可以不管。
+    // 查找所有封面图，迭代处理
+    $('.body_middle_book_left_img img').each(function(){
+        // 找到为0就将isLoad设为false，并退出each
+        if(this.height === 0){
+            isLoad = false;
+            return false;
+        }
+    });
+    // 为true，没有发现为0的。加载完毕
+    if(isLoad){
+        clearTimeout(t_img); // 清除定时器
+        // 回调函数
+        callback();
+    // 为false，因为找到了没有加载完成的图，将调用定时器递归
+    }else{
+        isLoad = true;
+        t_img = setTimeout(function(){
+            isImgLoad(callback); // 递归扫描
+        },300); // 我这里设置的是500毫秒就扫描一次，可以自己调整
+    }
+}
 
 $(".body_middle_book_info").each(function(){
 
@@ -160,5 +201,25 @@ $(".body_middle_book_info").each(function(){
     $(this).text($(this).text().substring(0,80))
     $(this).html($(this).html()+'...');
   }
-})
+});
 
+
+//导航栏鼠标
+var index = $(".body_top_input").val() - 0 -1;
+$(".body_top_nav_arrow").eq(index).siblings('div').css('display','none');
+$(".body_top_nav_arrow").eq(index).css('display','block');
+
+// if($(".body_top_nav_list li div").css('display') == 'block')
+// {
+//   var select_nav = $(".body_top_nav_list li div").index(".body_top_nav_arrow");
+// }
+
+$(".body_top_nav_list li").mouseenter(function(){
+  // var num = $(this).index();
+  $(this).find("div").css('display','block');
+  $("body_top_nav").eq(index).find("div").css('display', 'block');
+});
+$(".body_top_nav_list li").mouseleave(function(){
+  $(this).find("div").css('display','none');
+  $(".body_top_nav").eq(index).find("div").css('display', 'block');
+});

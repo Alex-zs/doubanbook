@@ -21,26 +21,33 @@
 				<div class="regist_form_inner">
 					<div class="regist_form_name">
 						<div class="regist_form_name_word">用户名</div>
-						<input required name="name" placeholder="请输入您的昵称" class="regist_form_name_input" type="text" >
+						<input required name="name" value="{{request.user.name}}" placeholder="请输入您的昵称" class="regist_form_name_input" type="text" >
 					</div>
 					<div class="personal_change_sex">
 						<div class="personal_change_sex_word">性别</div>
-						<input required type="radio" name="sex" value="男">男
+						{% if request.user.sex == '男' %}
+						<input required checked="true" type="radio" name="sex" value="男">男
 						<input required type="radio" name="sex" value="女">女
+						{% else %}
+						<input required type="radio" name="sex" value="男">男
+						<input checked="true" required type="radio" name="sex" value="女">女
+						{% endif %}
+						
 					</div>
 						
 					
 					<div class="personal_change_sign">
 						<div class="personal_change_sign_word">个性签名</div>
 						<div class="personal_change_sign_input">
-							<textarea name="motto" id="" cols="35" rows="5" onkeydown="return checkenter()"></textarea>
+							<textarea name="motto" id="" cols="35" rows="5" onkeydown="return checkenter()">
+							</textarea>
 						</div>
 					</div>
 					<div style="clear: both;"></div>
 
 					<div class="personal_change_tou">
 						<div class="personal_change_tou_word">头像</div>
-						<input type="file" name="image" value="添加图片" required onchange="checkFileExt(this)" ></div>
+						<input type="file" name="image" value="" required onchange="checkFileExt(this)" ></div>
 					<div style="clear: both;"></div>
 					
 					<div style="clear: both;"></div>

@@ -11,8 +11,16 @@
 	<link rel="stylesheet" href="/static/css/shouye.css">
 	<link rel="stylesheet" href="/static/css/footer.css">
 </head>
+<script>
+	window.onload=function(){
+    $(".loading_page").fadeOut();
+}
+</script>
 <body>
-	<div class="loading_page"></div>
+	<div class="loading_page">
+		<div class="loading_page_pic"><img src="/static/images/Book.png" alt=""></div>
+		<h2>LOADING···</h2>
+	</div>
 	<div class="container">
 		<div class="containner_inner">
 			
@@ -26,8 +34,11 @@
 				</ul>
 			</div>
 			<div class="search_box">
-				<input class="search_box_input" type="text"  placeholder="请输入关键词">
-				<button class="search_box_button"></button>
+				<form action="/search/article/" method="get">
+					{% csrf_token %}
+				<input class="search_box_input" name="keyword" type="text"  placeholder="请输入关键词">
+				<button type="submit" class="search_box_button" onclick="return input();"></button>
+				</form>
 			</div>
 			<div class="nav_log_reg">
 				{% if request.user.is_authenticated %}
@@ -74,7 +85,7 @@
 						{% for article in article_3 %}
 						<li class="body_top_sfq_pic_3 sfq_pic">
 							<a href="/detail/{{article.id}}">
-							<div style="display: none;" class="body_top_sfq_word">{{article.title}}</div>
+							<div class="body_top_sfq_word">{{article.title}}</div>
 							<!-- <div class="body_top_sfq_pic_hover"></div> -->
 							<img class="body_top_sfq_pic_img" src="/{{article.image}}" alt="">
 							</a>
@@ -121,7 +132,7 @@
 						{% for article in article_photo %}	
 							<li class="hotessey_photoalbum_1">
 								<div class="hotessey_photoalbum_1_a_div">
-								<a class="hotessey_photoalbum_1_a" href="/detail/{{article.id}}"><img src="/{{article.image}}" alt=""></a></div>
+								<a class="hotessey_photoalbum_1_a" href="/detail/{{article.id}}"><img class="cover" src="/{{article.image}}" alt=""></a></div>
 								<h6 class="hotessey_photoalbum_name_1"><a class="hotessey_photoalbum_name_1_a" href="/detail/{{article.id}}">{{article.title}}</a></h6>
 							</li>
 							{% endfor %}
@@ -135,7 +146,7 @@
 									<div class="hotessey_essay_title"><a class="hotessey_essay_title_a" href="/detail/{{article.id}}">{{article.title}}</a></div>
 									<div class="hotessey_essay_user_pic">
 										<a class="hotessey_essay_title_a" href="/detail/{{article.id}}">
-										<img src="/{{request.user.head_img}}" alt="">
+										<img src="/{{article.author.head_img}}" class="cover" alt="">
 									</a></div>									<span class="hotessey_essay_publish_time">{{article.update_time}}</span>
 									<div class="hotessey_essay_scan">
 										<img src="/static/images/essey_scan.png" alt="">
@@ -143,7 +154,7 @@
 									</div>
 								</div>
 								<div class="hotessey_essay_pic_div">
-								<img class="hotessey_essay_pic" src="/{{article.image}}" alt="">
+								<img class="hotessey_essay_pic cover" src="/{{article.image}}" alt="">
 							</div>
 							</li>
 							{% endfor %}
@@ -167,7 +178,7 @@
                             {% for key, value in book.items %}
 							<li class="body_hotbook_book">
 								<div class="body_hotbook_a_1_div">
-								<a  class="body_hotbook_a_1" href="{% url 'book_contain' value|key:"id" %}"><img src="{{ value|key:"cover" }}" alt=""></a></div>
+								<a  class="body_hotbook_a_1" href="{% url 'book_contain' value|key:"id" %}"><img class="cover" src="{{ value|key:"cover" }}" alt=""></a></div>
 								<div class="body_hotbook_book_title"><a  class="body_hotbook_book_title_a" href="{% url 'book_contain' value|key:"id" %}">{{ value|key:"bookname" }}</a></div>
 								<div class="body_hotbook_book_want">收藏人数：{{ value|key:"loveCount" }}</div>
 

@@ -3,7 +3,7 @@ from django.conf import settings
 
 
 class UsersAppConf(AppConf):
-    VERIFY_EMAIL = False
+    VERIFY_EMAIL = True
     CREATE_SUPERUSER = settings.DEBUG
     SUPERUSER_EMAIL = 'superuser@djangoproject.com'
     SUPERUSER_PASSWORD = 'django'
@@ -12,7 +12,7 @@ class UsersAppConf(AppConf):
     REGISTRATION_OPEN = True
     AUTO_LOGIN_ON_ACTIVATION = True
     AUTO_LOGIN_AFTER_REGISTRATION = False
-    PASSWORD_MIN_LENGTH = 5
+    PASSWORD_MIN_LENGTH = 6
     PASSWORD_MAX_LENGTH = None
     CHECK_PASSWORD_COMPLEXITY = True
     PASSWORD_POLICY = {

@@ -35,13 +35,13 @@ class ArticleTimeModelFilter(admin.SimpleListFilter):
 
 @admin.register(Article)
 class ArticleAdmin(admin.ModelAdmin):
-    list_display=('title', 'author', 'pub_date', 'update_time')
+    list_display=('title', 'author', 'pub_date', 'update_time','isHomeArticle','isDisplay')
     search_fields = ('title', 'content')
     list_per_page = 10
     list_filter = (ArticleTimeModelFilter,)
     fieldsets = (
         [u'在此编辑内容', {
-            'fields': ('title', 'content', 'article_cate', 'abstract', 'image', 'update_time'),
+            'fields': ('title', 'content', 'article_cate', 'abstract', 'image', 'update_time','isHomeArticle','isDisplay'),
         }],
     )
     readonly_fields = ('update_time',)

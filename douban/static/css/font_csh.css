@@ -32,3 +32,12 @@ src: url('../font/Gagalin-Regular.eot?#iefix') format('embedded-opentype'),
         url('../font/zhong.ttf') format('truetype'),   
         url('../font/zhong.svg#zhong') format('svg'); 
 }
+div{
+    word-break:break-all;
+}
+button{
+    outline: none;
+}
+input{
+    outline: none;
+}

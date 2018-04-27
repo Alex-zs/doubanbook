@@ -34,18 +34,18 @@ $(".regist_form_name_input").focus(function(){
 
   
 });
-$(".regist_form_name_input").blur(function(){
+// $(".regist_form_name_input").blur(function(){
 
-    var content=$(this).val();
-  	if(content==""){
-  		$(this).css({'color':'#C9C9C9'});
-  		$(this).attr("value","example@xxx.com");
-	}
-	else{
-		$(this).css({'color':'black'});
-	}
+//     var content=$(this).val();
+//   	if(content==""){
+//   		$(this).css({'color':'#C9C9C9'});
+//   		$(this).attr("value","example@xxx.com");
+// 	}
+// 	else{
+// 		$(this).css({'color':'black'});
+// 	}
 
-});
+// });
 
 //input code
 
@@ -219,3 +219,6 @@ $(".regist_form_name_input").blur(function(obj){
 //   }
 
 // });
+$("input").focus(function(){
+  $(".errors_tip_1,.errors_tip_2,.errors_tip_3,.errors_tip_4").css("display","none");
+})

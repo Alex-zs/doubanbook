@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>豆瓣搜索</title>
+	<link rel="shortcut icon" href="/static/images/bitbug_favicon.ico">
+	<link rel="stylesheet" href="/static/css/font_csh.css">
+	<link rel="stylesheet" href="/static/css/article_list.css">
+	<link rel="stylesheet" href="/static/css/book_list.css">
+	<link rel="stylesheet" href="/static/css/footer.css">
+	<link rel="stylesheet" href="/static/css/header.css">
+	<!-- 插件部分 -->
+
+	
+</head>
+<body>
+	<style>
+		.body_middle_inner{
+			padding-top: 0px;
+
+		}
+	/*	.body_middle_article_title{
+			min-height: 380px;
+			width: 1006px;
+			margin:0px auto;
+		}*/
+		.search_box{
+			width: 405px;
+			margin-left: 353px;
+		}
+		.body_middle_article_title a{
+			color: #333333;
+		}
+		.body_bottom_page a{
+			color: #347898;
+		}
+		.header{
+			border-bottom: 1px solid rgb(228,228,228);
+		}
+
+	</style>
+	<div class="container">
+<!-- <div class="tipstutorials">建议图标尺寸：80×80px</div>  
+<em class="tipstutorials">建议图标尺寸：150×100px<br/>背景尺寸：640×200px</em>   -->
+		<div class="header">
+			<div class="logo_1"><a style="display: block;" href="/"><img src="/static/images/logo.png" alt=""></a></div>
+			<!-- <div class="nav_menu"> -->
+				<!-- <a href=""><img src="/static/images/book_list_logo.png" alt="shouye.html">
+				<span class="nav_menu_word">豆瓣文章</span>
+				<div style="clear: both;"></div>
+				</a> -->
+<!-- 				<ul class="nav_menu_ul">
+					<li class="nav_book">豆瓣读书</li>
+					<li class="nav_essey">豆瓣文章</li>
+				</ul>
+
+			</div> -->
+			<div class="search_box">
+				<form action="/search/article/" method="get">
+					{% csrf_token %}
+				<input class="search_box_input" name="keyword" type="text"  placeholder="请输入关键词">
+				<button type="submit" class="search_box_button"></button>
+				</form>
+			</div>
+			<div class="nav_log_reg">
+				{% if request.user.is_authenticated %}
+				<span class="personal_center"><a class="personal_center_a" href="/userArticleList/" >个人中心</a></span>
+				<span class="log_out" ><a class="log_out_a" href="/accounts/logout/">注销</a></span>
+				{% else %}
+				<span class="login"><a class="login_a" href="/accounts/login/">登录</a></span>
+				<span class="registration"><a class="registration_a" href="/accounts/register">注册</a></span>
+				{% endif %}
+			</div>
+		</div>
+
+		{% if message %}
+<div class="body_middle_article_title">{{message}}</div>
+{% else %}
+
+		<div class="body">
+			<div class="article_save_tip" style="display: none;">您已成功添加到 个人中心-收藏</div>
+			
+			<div class="body_middle">
+				<div class="body_middle_inner">
+					<ul class="body_middle_articleList_1">
+					{% for article in articleList %}
+						<li class="body_middle_article">
+							<div class="body_middle_article_left">
+								<a href="article_contain.html">
+								<img src="/{{article.image}}" alt=""></a>
+								
+								
+							</div>
+							<div class="body_middle_article_right">
+								<div class="body_middle_article_title"><a href="/detail/{{article.id}}/">
+									{{article.title}}
+								</a></div>
+								<span class="body_middle_article_author">{{article.author.name}}</span>
+								<span class="body_middle_article_publishtime">{{article.update_time}}</span>
+								<p class="body_middle_article_info">{{article.abstract}}……</p>
+								
+							</div>
+							
+
+						</li>
+					{% endfor %}
+
+
+					</ul>
+	
+				</div>
+				{% endif %}
+				<div class="body_bottom_page">
+						{% if articleList.has_previous %}
+						<a href="?page={{lastPage}}&keyword={{keyword}}"><span class="last_page"> 上一页</span></a>
+						{% else %}
+						<span class="last_page"> 上一页</span>
+						{% endif %}
+						<a href="?page=1&keyword={{keyword}}"><span class="first_page"> 首页</span></a>
+						{% if articleList.has_next %}
+						<a href="?page={{nextPage}}&keyword={{keyword}}"> <span class="next_page">下一页</span></a>
+						{% else %}
+						<span class="next_page">下一页</span>
+						{% endif %}
+						<div class="last_page_tip" style="display: none;">已经是最后一页啦~</div>
+						<div class="first_page_tip" style="display: none;">已经是第一页啦~</div>
+					</div>
+			</div>
+			<div class="footer">
+			<div class="footer_inner">
+				<div class="footer_nav">
+					<ul class="footer_nav_list">
+						<li class="footer_nav_content_1"><a class="footer_nav_content_a_1" href="">关于我们</a></li>
+						<li class="footer_nav_content_2"><a class="footer_nav_content_a_2"  href="">加入我们</a></li>
+						<li class="footer_nav_content_3"><a class="footer_nav_content_a_3"  href="">合作伙伴</a></li>
+						<li class="footer_nav_content_4"><a  class="footer_nav_content_a_4" href="">广告服务</a></li>
+						<li class="footer_nav_content_5"><a class="footer_nav_content_a_5"  href="">常见问题</a></li>
+					</ul>
+				</div>
+				<div class="footer_nav_middle">
+					<ul class="footer_nav_middle_list">
+						<li class="footer_nav_middle_xinlang"><a class="footer_nav_middle_a_xinlang" href=""><img src="/static/images/xinlang_lgo.png" alt=""></a></li>
+						<li class="footer_nav_middle_wechat"><a class="footer_nav_middle_a_wechat" href=""><img src="/static/images/weixin_logo.jpg" alt=""></a></li>
+						<li class="footer_nav_middle_chrome"><a class="footer_nav_middle_a_chrome" href=""><img src="/static/images/liulan——logo.png" alt=""></a></li>
+					</ul>
+					<div style="clear: both;"></div>
+				</div>
+				<div class="footer_bottom_address">© 2005－2018 douban.com, all rights reserved 北京豆网科技有限公司</div>
+			</div>
+
+		</div>
+		</div>
+	</div>
+
+</body>
+<script src="/static/js/jquery-3.2.1.min.js"></script>
+<script src="/static/js/search.js"></script>
+<!-- <script src="/static/js/book_list.js"></script> -->
+
+</html>

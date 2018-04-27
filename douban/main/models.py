@@ -3,11 +3,11 @@ from DjangoUeditor.models import UEditorField
 from users.models import User
 from django.utils.html import strip_tags
 from .storage import ImageStorage
-# import markdown
+import markdown
 
 
 class Article(models.Model):
-    category=(('小说','小说'),('散文','散文'),('戏曲','戏曲'),('剧本','剧本'),('诗歌','诗歌'),('寓言','寓言'),('童话','童话'),('书信','书信'),('议论文','议论文'),('说明文','说明文'),('记叙文','记叙文'),('报告','报告'),('总结','总结'),('新闻','新闻'),)
+    category=(('小说','小说'),('散文','散文'),('感悟','感悟'),('新闻','新闻'),)
     title = models.CharField('标题',max_length=256)
     pub_date = models.DateTimeField('发表时间',auto_now_add=True)
     update_time = models.DateTimeField('更新时间',auto_now=True,null=True)
@@ -17,7 +17,8 @@ class Article(models.Model):
     article_cate = models.CharField('类别',max_length=5,choices=category,default='小说')
     views = models.PositiveIntegerField(default=0)
     image = models.ImageField('封面',upload_to='article_img',storage=ImageStorage())
-    isHomeArticle = models.BooleanField(default=False)
+    isHomeArticle = models.BooleanField('首页文章',default=False)
+    isDisplay = models.BooleanField('文章展示',default=False)
 
 
     def save(self,*args,**kwargs):

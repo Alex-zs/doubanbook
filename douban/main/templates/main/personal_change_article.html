@@ -11,40 +11,44 @@
 <script type="text/javascript" src="/static/ueditor/ueditor.all.min.js"></script>
 </head>
 <body>
-	<div class="container">
+	 <div class="container">
 		<div class="container_inner">
 			<div class="personal_nav">
-			<img  class="personal_nav_logo" src="/static/images/logo_4.png" alt="">
+			<a href="/">
+			<img  class="personal_nav_logo" src="/static/images/logo_4.png" alt=""></a>
 			<h3 class="personal_nav_title">{{ request.user.name }}的个人主页</h3>
 			<div style="clear: both;"></div>
 			</div>
 			<div class="personal_body">
+
 				<div class="personal_body_arrow_1"><img src="/static/images/write_article_arrow.png" alt=""></div>
+			
+				
 				<div class="personal_body_perinfo">
-					<div class="personal_bofy_perinfo_pic"><img src="../images/head_pic.png" alt=""></div>
+					<div class="personal_bofy_perinfo_pic"><img src="/{{request.user.head_img}}" alt=""></div>
 					<h6 class="personal_body_perinfo_name">{{ request.user.name }}</h6>
 					<img class="personal_body_perinfo_sex" src="/static/images/sex_1.png" alt="">
-					<img class="personal_body_perinfo_write" src="/static/images/write_ar_2.png" alt="">
-					<div class="personal_body_perinfo_words">这个人很懒，什么都没留下哦！</div>
-				</div>
-				<div class="personal_body_menu">
+					<a href="/informationChange/"><img class="personal_body_perinfo_write" src="/static/images/write_ar_2.png" alt=""></a>
+					<div class="personal_body_perinfo_words">{{request.user.motto}}</div>
+					</div>
+					<div class="personal_body_menu">
 					<ul>
 						<li class="personal_body_save_books">
-							<a href="personal_center_save_book.html">
+							<a href="{% url 'saveBook' %}">
 								<span class="personal_body_save_books_span">我收藏的书籍</span>
 								
 								<img class="personal_body_save_books_img" src="/static/images/save_arrow_nochoose_1.png" alt="">
 							</a>
 						</li>
 							<li class="personal_body_save_articles">
-								<a href="personal_center_save_article.html">
+								<a href="/saveArticle/">
 								<span class="personal_body_save_articles_span">我收藏的文章</span>
 								
 								<img class="personal_body_save_articles_img" src="/static/images/save_arrow_nochoose_1.png" alt="">
 							</a>
 						</li>
 						<li class="personal_body_save_comment">
-							<a href="personal_center_comment.html">
+							<a href="/comment/">
 								<span class="personal_body_save_comment_span">我编写的评论</span>
 								
 								<img class="personal_body_save_comment_img" src="/static/images/save_arrow_nochoose_1.png" alt="">
@@ -69,9 +73,13 @@
 				</div>
 				<div class="personal_body_write_article">
 
-                    <form action="." method="post">
+                    <form action="." method="post" enctype="multipart/form-data">
                         {% csrf_token %}
 					<div class="personal_body_write_title"><input name="title" maxlength="256" required id="id_title"  class="personal_body_write_title_input" value="{{article.title}}" type="text"></div>
+					<div class="personal_body_write_add_img">
+            <input type="file" name="image" required id="id_image" >
+
+          </div>
 
 									<div class="personal_body_write_content">
 
@@ -87,38 +95,18 @@
      });
 </script></div>
 
-						
+							<div class="article_type">
 						<select  name="article_cate" id="id_article_cate">
-							<option value="{{article.article_cate}}" selected>{{article.article_cate}}</option>
-  <option value="小说">小说</option>
+  <option value="小说" selected>小说</option>
 
   <option value="散文">散文</option>
 
-  <option value="戏曲">戏曲</option>
-
-  <option value="剧本">剧本</option>
-
-  <option value="诗歌">诗歌</option>
-
-  <option value="寓言">寓言</option>
-
-  <option value="童话">童话</option>
-
-  <option value="书信">书信</option>
-
-  <option value="议论文">议论文</option>
-
-  <option value="说明文">说明文</option>
-
-  <option value="记叙文">记叙文</option>
-
-  <option value="报告">报告</option>
-
-  <option value="总结">总结</option>
+  <option value="感悟">感悟</option>
 
   <option value="新闻">新闻</option>
 </select>
-<input type="submit" value="提交">
+</div>
+<input class="personal_body_write_submit" type="submit" value="提交">
 </form>
 					</div> 				
 			

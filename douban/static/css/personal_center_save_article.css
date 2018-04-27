@@ -70,7 +70,7 @@ li{
 	width: 34px;
 	height: 34px;
 	border-radius: 17px;
-	
+	overflow: hidden;
 	position: absolute;
 	top: 30px;
 	left: 26px;
@@ -81,11 +81,11 @@ li{
 }
 .personal_body_perinfo_name{
 
-	font-size: 18px;
+	font-size: 14px;
 	letter-spacing: 1px;
 	color: #333333;
 	position: absolute;
-	top: 32px;
+	top: 36px;
 	left: 81px;
 }
 .personal_body_perinfo_sex{

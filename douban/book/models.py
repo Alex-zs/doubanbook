@@ -42,7 +42,7 @@ class Book(models.Model):
     pressTime = models.DateTimeField(verbose_name="出版时间", null=True)
     press = models.CharField(verbose_name="出版社", null=True, max_length=30)
     page = models.IntegerField(verbose_name="页数", default=0)
-    price = models.IntegerField(verbose_name="价格", default=99999)
+    price = models.FloatField(verbose_name="价格", null=True, default=999)
     owner = models.ForeignKey(User, verbose_name="编辑人", editable=False, null=True, on_delete=models.SET_NULL)
     label = models.ForeignKey(SLabel, verbose_name="标签", null=True, on_delete=models.SET_NULL)
     cover = models.ImageField(verbose_name="封面", upload_to='book_img')

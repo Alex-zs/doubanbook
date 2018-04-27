@@ -19,15 +19,15 @@ from captcha.fields import CaptchaField
 from django.utils.text import capfirst
 from captcha.models import CaptchaStore
 from captcha.helpers import captcha_image_url
-
+from .models import User
 
 UserModel = get_user_model()
 
 class UserCreationForm(forms.ModelForm):
 
     error_messages = {
-        'duplicate_email': _('A user with that email already exists.'),
-        'password_mismatch': _('The two password fields didn\'t match.'),
+        'duplicate_email': _('用户已存在'),
+        'password_mismatch': _('两次密码不一致'),
     }
 
     email = UsersEmailField(label=_('Email Address'), max_length=255)
@@ -141,15 +141,15 @@ class AuthenticationForm(forms.Form):
         strip=False,
         widget=forms.PasswordInput,
     )
-
+    captcha = CaptchaField(error_messages={"invalid":u"验证码错误"})
     error_messages = {
         'invalid_login': _(
-            "Please enter a correct %(username)s and password. Note that both "
-            "fields may be case-sensitive."
+            "*密码错误，请重新输入！"
         ),
-        'inactive': _("This account is inactive."),
+        'inactive': _("用户未激活！"),
+        'doesNotExist': _("用户不存在"),
+        'passwordError':_("密码错误，请重新输入！"),
     }
-    captcha = CaptchaField()
     
     def __init__(self, request=None, *args, **kwargs):
         """
@@ -168,7 +168,6 @@ class AuthenticationForm(forms.Form):
     def clean(self):
         username = self.cleaned_data.get('username')
         password = self.cleaned_data.get('password')
-
         if username is not None and password:
             self.user_cache = authenticate(self.request, username=username, password=password)
             if self.user_cache is None:
@@ -178,7 +177,10 @@ class AuthenticationForm(forms.Form):
                 try:
                     self.user_cache = UserModel._default_manager.get_by_natural_key(username)
                 except UserModel.DoesNotExist:
-                    pass
+                    form.ValidationError(
+                        self.error_messages['passwordError'],
+                        code = 'passwordError'
+                        )
                 else:
                     self.confirm_login_allowed(self.user_cache)
                 raise forms.ValidationError(
@@ -218,7 +220,7 @@ class AuthenticationForm(forms.Form):
 
 class PasswordResetForm(forms.Form):
     email = forms.EmailField(label=_("Email"), max_length=254)
-    
+    captcha = CaptchaField(error_messages={"invalid":u"验证码错误"})
     
     def send_mail(self, subject_template_name, email_template_name,
                   context, from_email, to_email, html_email_template_name=None):

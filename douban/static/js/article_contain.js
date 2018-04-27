@@ -162,24 +162,52 @@ $(".body_article_author_love").click(function(){
 // })
 
 //评论框字数统计
-
-
-$(".book_writecomment_input").keyup(function(){
+var comment_commit = true;
+function count_comment(){
 
 	var comment_length = $(".book_writecomment_input").val().length ;
-	if( comment_length >140){
-		$(this).val($(this).val().substring(0,140))
-	}
-	else{
-		$(".book_writecomment_count input").val(comment_length-0);
-	}
 
+		if( comment_length >140){
+		// $(this).val($(this).val().substring(0,140))
+		$(".book_writecomment_count_tip_more").show();
+		$(".book_writecomment_count_tip_less").hide();
+		$(".book_writecomment input").css('color','#e81a33');
+		comment_commit = true;
+
+		}
+		else if(comment_length == 0){
+			$(".book_writecomment input").css('color',' #C9C9C9');
+			 $(".book_writecomment_count_tip_more").hide();
+			$(".book_writecomment_count_tip_less").hide();
+			comment_commit = true;
+			
+		}
+		else if(comment_length <15)
+		{
+			$(".book_writecomment_count_tip_more").hide();
+			$(".book_writecomment_count_tip_less").show();
+			$(".book_writecomment input").css('color','#e81a33');
+			comment_commit = true;
+		}
+
+		else{
+			
+			 $(".book_writecomment input").css('color',' #C9C9C9');
+			 $(".book_writecomment_count_tip_more").hide();
+			$(".book_writecomment_count_tip_less").hide();
+			comment_commit = false;
+		}
 	
+	$(".book_writecomment_count input").val(comment_length-0);
 
-});
+}
+function comment(){
+	if(comment_commit == true)
+		return false;
+}
 
 //判断是否登陆
-if($(".book_writecomment_login").css('display') != 'none')
+if($(".book_writecomment_login").length>0)
 {
 	$(".book_writecomment_input").attr('disabled','true');
 }
@@ -203,3 +231,37 @@ $(".book_comment_nav div").each(function(){
 // $("input").blur(function(){
 // 	$(this).css('border-color','#D9D9D9')
 // })
+
+
+
+//控制个人头像大小
+$(".body_comment_content_pic img").each(function(){
+  if($(this).width()/$(this).height() >1)
+ {
+   $(this).css({'height':'73px','width':'auto'});
+   var left = ($(this).width()/2 - $(".body_comment_content_pic").width()/2);
+ 	$(this).css('margin-left',-left);
+ }
+ else{
+  $(this).css({'height':'auto','width2':'73px'});
+  var height = ($(this).height()/2 - $(".body_comment_content_pic").height()/2);
+ $(this).css('margin-top',-height);
+ }
+})
+
+
+
+$(".body_article_author_pic img").each(function(){
+  if($(this).width()/$(this).height() >1)
+ {
+   $(this).css({'height':'50px','width':'auto'});
+   var left = ($(this).width()/2 - $(".body_article_author_pic").width()/2);
+ 	$(this).css('margin-left',-left);
+ }
+ else{
+  $(this).css({'height':'auto','width':'50px'});
+  var height = ($(this).height()/2 - $(".body_article_author_pic").height()/2);
+ $(this).css('margin-top',-height);
+ 
+ }
+})

@@ -16,5 +16,6 @@ urlpatterns = [
     url(r'^saveArticle/$',saveArticle,name='saveArticle'),
     url(r'^saveBook/$',display_book_collect,name='saveBook'),
     url(r'^delete/save/(?P<article_id>[0-9]+)/$',deleteSave,name='deleteSave'),
-    url(r'^delete/comment/(?P<comment_id>[0-9]+)/$',deleteComment,name='deleteComment')
+    url(r'^delete/comment/(?P<comment_id>[0-9]+)/$',deleteComment,name='deleteComment'),
+    url(r'^search/article/$',searchArticle,name='searchArticle')
 ]

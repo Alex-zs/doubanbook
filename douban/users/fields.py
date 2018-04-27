@@ -19,11 +19,11 @@ class LengthValidator(object):
     def __call__(self, value):
         if self.min_length and len(value) < self.min_length:
             raise forms.ValidationError(
-                _('Password too short (must be %s characters or more)') % self.min_length,
+                _('*密码长度至少大于%s位') % self.min_length,
                 code=self.code)
         elif self.max_length and len(value) > self.max_length:
             raise forms.ValidationError(
-                _('Password too long (must be %s characters or less)') % self.max_length,
+                _('*密码长度不得大于%s位 ') % self.max_length,
                 code=self.code)
 
 length_validator = LengthValidator()

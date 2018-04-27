@@ -23,12 +23,13 @@ def dividePage(reqGetList, input, cut=4):
     return back
 
 
-def book_list(request, labelId = 0):
+def book_list(request, labelId=0, sort=0):
     back = {
         "bookList": {},
         "labelOnTheTop": {},
         "pageCount": 1,
         "nowPage": 0,
+        "upArrow": 0,
     }
 
     allFLabel = FLabel.objects.all()
@@ -40,6 +41,8 @@ def book_list(request, labelId = 0):
             "id": label.id,
             "name": label.labelName,
         }
+        if label.id == int(labelId):
+            back["upArrow"] = i + 2
     back["labelOnTheTop"] = labelSet
 
     nowlabel = None
@@ -51,7 +54,17 @@ def book_list(request, labelId = 0):
         allBook = Book.objects.filter(label__fatherLabel=nowlabel)
     else:
         allBook = Book.objects.all()
-    allBook = allBook.order_by('-score')
+    logging.debug(sort)
+    if int(sort) == 0:
+        allBook = allBook.order_by('-score')
+        if back["upArrow"] == 0:
+            back["upArrow"] = 1
+        logging.debug(sort)
+    elif int(sort) == 1:
+        allBook = allBook.order_by('-createTime')
+        if back["upArrow"] == 0:
+            back["upArrow"] = 2
+        logging.debug(sort)
     i = 0
     bookList = {}
     for book in allBook:
@@ -88,11 +101,11 @@ def book_show(request, id):
     try:
         getBook = Book.objects.get(id=id)
         star = {
-            "1": Comment.objects.filter(score=1).count(),
-            "2": Comment.objects.filter(score=2).count(),
-            "3": Comment.objects.filter(score=3).count(),
-            "4": Comment.objects.filter(score=4).count(),
-            "5": Comment.objects.filter(score=5).count(),
+            "1": Comment.objects.filter(book=getBook, score=1).count(),
+            "2": Comment.objects.filter(book=getBook, score=2).count(),
+            "3": Comment.objects.filter(book=getBook, score=3).count(),
+            "4": Comment.objects.filter(book=getBook, score=4).count(),
+            "5": Comment.objects.filter(book=getBook, score=5).count(),
         }
         allScoreComment = star["1"] + star["2"] + star["3"] + star["4"] + star["5"]
         score = star["1"] * 1 + star["2"] * 2 + star["3"] * 3 + star["4"] * 4 + star["5"] * 5
@@ -164,13 +177,16 @@ def book_show(request, id):
     if request.method == "POST":
         form = CommentForm(request.POST)
         if form.is_valid():
-            content = form.cleaned_data["content"]
             user = request.user
-            logging.debug(user.name)
-            score = form.cleaned_data["score"]
-            logging.debug(score)
-            newComment = Comment(book=getBook, owner=user, content=content, score=score)
-            newComment.save()
+            try:
+                logging.debug(user.name)
+                score = form.cleaned_data["score"]
+                logging.debug(score)
+                content = form.cleaned_data["content"]
+                newComment = Comment(book=getBook, owner=user, content=content, score=score)
+                newComment.save()
+            except:
+                pass
         # 下面是点赞的
     form = CommentForm()
     back["form"] = form
@@ -195,6 +211,16 @@ def book_uncollect(request, bookId):
     Collection.objects.filter(book=book, collector=user).delete()
     logging.debug(user, book)
     return HttpResponse('<script>window.location.href = document.referrer;</script>')
+
+
+def comment_delete(request, id):
+    try:
+        user = request.user
+        comment = Comment.objects.get(id=id,owner=user)
+        comment.delete()
+        return HttpResponse("<script>window.location.href = document.referrer;</script>")
+    except:
+        return HttpResponse("<script>window.location.href = document.referrer;</script>")
 
 
 def search(request, st):
