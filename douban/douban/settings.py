@@ -29,7 +29,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'n7#w%n)q181wc29sn1l7l)fet$6a0+^!^xk+-d72*$2fr^v0u^'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -144,8 +144,8 @@ MEDIA_URL = '/media/'
 
 
 EMAIL_USE_SSL = True
-EMAIL_HOST = 'smtp.qq.com'  # 如果是 163 改成 smtp.163.com
+EMAIL_HOST = 'smtp.163.com'  # 如果是 163 改成 smtp.163.com
 EMAIL_PORT = 465
-EMAIL_HOST_USER = '330953853@qq.com' # 帐号
-EMAIL_HOST_PASSWORD = 'kivfmjwrudfycbci'  # 密码
+EMAIL_HOST_USER = 'alex_noreply@163.com' # 帐号
+EMAIL_HOST_PASSWORD = 'IdOoN4KyWxpt'  # 密码
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
